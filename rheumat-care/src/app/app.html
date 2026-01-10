@@ -1,0 +1,30 @@
+<div class="wrap">
+  <app-header></app-header>
+
+  <div class="grid">
+    <!-- LEFT: INPUTS -->
+    <div class="left-panel">
+      <app-patient-visit></app-patient-visit>
+
+      <div class="card">
+        <div class="divider"></div>
+        <app-rheumatologist-sheet></app-rheumatologist-sheet>
+
+        <div class="divider"></div>
+        <app-medications></app-medications>
+
+        <div class="divider"></div>
+        <app-module-selector></app-module-selector>
+      </div>
+
+      <app-cris *ngIf="showCRIS()"></app-cris>
+      <app-uris *ngIf="showURIS()"></app-uris>
+      <app-hcq *ngIf="showHCQ()"></app-hcq>
+    </div>
+
+    <!-- RIGHT: PRINT SUMMARY -->
+    <div class="right-panel">
+      <app-print-summary></app-print-summary>
+    </div>
+  </div>
+</div>

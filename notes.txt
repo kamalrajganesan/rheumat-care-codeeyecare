@@ -1,0 +1,94 @@
+CODE Eye Care - Rheumatology Interface Application
+
+  I've analyzed the HTML file. Here's a comprehensive breakdown of the application:
+
+  Application Overview
+
+  A medical data entry and reporting system for ophthalmology-rheumatology interface care. It allows healthcare professionals to document patient visits, track medications, and generate printable summaries.
+
+  Core Functionalities
+
+  1. Patient & Visit Management
+
+  - Patient identification (name, CEC number)
+  - Rheumatologist information
+  - Visit type categorization
+
+  2. Rheumatologist Sheet
+
+  - Systemic diagnosis tracking (11 conditions including Sjogren's, RA, SLE, etc.)
+  - Serology status, disease status, treatment targets
+  - Lab values (ESR, CRP, disease activity scores)
+  - Clinical impressions
+
+  3. Medication Management
+
+  - Systemic medications tracking
+  - Dosage details for specific medications
+  - HCQ cumulative dose calculator (automatic calculation)
+
+  4. Three Specialized Modules
+
+  CRIS (Cornea-Rheumat Interface)
+  - Dry eye assessment (DEQ5 scores)
+  - Schirmer's test results (bilateral)
+  - Corneal staining severity
+  - Topical medication tracking
+  - Emergency condition flags (scleritis, PUK, perforation)
+  - Surgical clearance status
+
+  URIS (Uvea-Rheumat Interface)
+  - Uveitis classification (anatomical & nature)
+  - Episode tracking and patterns
+  - Differential diagnosis options
+  - Topical treatment protocols
+  - Action items and coordination needs
+
+  HCQ Screening
+  - Baseline and follow-up screening
+  - Test tracking (OCT, fundus photo, HVF, MF-ERG)
+  - Toxicity assessment
+
+  5. Output Features
+
+  - Real-time print preview (right panel)
+  - PDF generation (print to PDF)
+  - CSV export for data analysis
+  - No data storage (privacy-focused)
+
+  UI/UX Observations
+
+  - Clean, modern card-based design
+  - Responsive two-column grid layout
+  - Sticky header for persistent access to actions
+  - Conditional field display (reduces clutter)
+  - Real-time summary updates
+  - Status pills for module completion tracking
+
+  Technical Stack (Current)
+
+  - Vanilla JavaScript
+  - CSS custom properties
+  - Single HTML file (~1000 lines)
+
+  ---
+  Recommended Angular Architecture
+
+  Based on this analysis, I'll create an Angular application with:
+
+  Structure:
+  - Feature-based modules (CRIS, URIS, HCQ)
+  - Reactive forms with validation
+  - Component composition
+  - Services for business logic
+  - Angular Material UI components
+  - Responsive design (desktop-first, per your requirement)
+
+  Best Practices:
+  - TypeScript strict mode
+  - Standalone components (Angular 15+)
+  - RxJS for state management
+  - Signal-based reactivity (Angular 16+)
+  - Lazy loading for modules
+  - Accessibility (ARIA labels, keyboard navigation)
+  - Print-optimized CSS

@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CODE Eye Care – Rheumatology Interface Summary</title>
+  <link rel="icon" href="CODE EYE CARE LOGO-02.png" />
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#fff; --text:#111827; --muted:#6b7280; --border:#d6dbe6;
+      --accent:#2563eb; --accent2:#1d4ed8; --ok:#10b981; --chip:#f3f4f6;
+    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+    .wrap{max-width:1250px;margin:0 auto;padding:16px;}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:10px 14px;border:1px solid var(--border);border-radius:14px;background:var(--card);
+      position:sticky;top:10px;z-index:10;box-shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+    .logo{height:44px;width:auto;object-fit:contain;display:block;}
+    .brand h1{font-size:16px;margin:0;}
+    .brand p{font-size:12px;margin:0;color:var(--muted);}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;}
+    button{
+      border:1px solid var(--border);background:#fff;color:var(--text);
+      padding:9px 12px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;
+    }
+    button.primary{background:linear-gradient(180deg,var(--accent),var(--accent2));color:#fff;border-color:var(--accent2);}
+    button.ghost{background:transparent;}
+    .grid{display:grid;grid-template-columns:1.08fr .92fr;gap:14px;margin-top:14px;}
+    .card{border:1px solid var(--border);border-radius:16px;background:var(--card);padding:14px;}
+    .card h2{margin:0 0 10px 0;font-size:15px;}
+    .divider{height:1px;background:var(--border);margin:12px 0;}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    label{display:block;font-size:12px;color:var(--muted);margin:8px 0 6px;}
+    input[type="text"], input[type="number"], select, textarea{
+      width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);
+      background:#fff;color:var(--text);outline:none;
+    }
+    textarea{min-height:70px;resize:vertical;}
+    .small{font-size:12px;color:var(--muted);}
+    .checks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+    .checks.onecol{grid-template-columns:1fr;}
+    .check{
+      display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);
+      background:var(--chip);padding:8px 10px;border-radius:12px;
+    }
+    .check input{margin-top:2px;}
+    .check span{font-size:13px;}
+    .hidden{display:none;}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);font-size:12px;}
+    .pill.ok{border-color:var(--ok);color:#065f46;background:#ecfdf5;}
+    .moduleTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;}
+    .miniGrid3{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:10px;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <img class="logo" src="CODE EYE CARE LOGO-02.png" alt="CODE Eye Care logo" />
+      <div>
+        <h1>CODE Eye Care – Rheumatology Interface Summary</h1>
+        <p>No data stored • Print/Save PDF</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="ghost" id="btnReset">Reset</button>
+      <button id="btnCSV">Download CSV</button>
+      <button class="primary" id="btnPrint">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT: INPUTS -->
+    <div class="card">
+
+      <h2>Patient & Visit</h2>
+      <div class="row">
+        <div>
+          <label>Patient name</label>
+          <input type="text" id="ptName" />
+        </div>
+        <div>
+          <label>CEC number</label>
+          <input type="text" id="cecNo" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Rheumatologist name</label>
+          <input type="text" id="rheumName" />
+        </div>
+        <div>
+          <label>Visit type</label>
+          <select id="visitType">
+            <option value="">Select…</option>
+            <option>First visit</option>
+            <option>Follow-up</option>
+            <option>Reports review</option>
+            <option>Urgent / flare</option>
+            <option>Others</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- RHEUMATOLOGIST SHEET (COMMON) -->
+      <h2>Rheumatologist Sheet (Common)</h2>
+
+      <label>Systemic diagnosis (tick that applies)</label>
+      <div class="checks" id="sysDxChecks"></div>
+
+      <label>Final systemic diagnosis (if known)</label>
+      <input type="text" id="sysFinalDx" placeholder="(optional)" />
+
+      <div class="row">
+        <div>
+          <label>Serology status</label>
+          <select id="seroStatus">
+            <option value="">Select…</option>
+            <option>Seropositive</option>
+            <option>Seronegative</option>
+            <option>Not applicable</option>
+            <option>Unknown</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="diseaseStatus">
+            <option value="">Select…</option>
+            <option>Active</option>
+            <option>Remission</option>
+            <option>Exacerbation</option>
+            <option>Burnt out</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Treatment target</label>
+          <select id="treatTarget">
+            <option value="">Select…</option>
+            <option>LDA</option>
+            <option>Remission</option>
+            <option>Others</option>
+          </select>
+        </div>
+        <div>
+          <label>Disease activity score</label>
+          <input type="text" id="dasScore" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>ESR</label>
+          <input type="text" id="esr" />
+        </div>
+        <div>
+          <label>CRP</label>
+          <input type="text" id="crp" />
+        </div>
+      </div>
+
+      <label>Rheumatologist’s impression</label>
+      <textarea id="rheumImpression"></textarea>
+
+      <div class="divider"></div>
+
+      <!-- MOVED UP: SYSTEMIC MEDS (COMMON TO ALL MODULES) -->
+      <h2>Current systemic medications <span class="small">(tick all applicable)</span></h2>
+      <div class="checks" id="medChecks"></div>
+
+      <div id="medDoses" class="hidden">
+        <div class="divider"></div>
+        <h2>Dose details (only for selected meds)</h2>
+
+        <div id="doseSteroid" class="hidden">
+          <label>Systemic steroid dose / regimen</label>
+          <input type="text" id="steroidDose" placeholder="e.g., Prednisolone 10 mg OD / 5 mg alternate day" />
+        </div>
+
+        <div id="doseMTX" class="hidden">
+          <label>Methotrexate dose (mg/week)</label>
+          <input type="number" id="mtxMgWeek" min="0" step="0.5" />
+        </div>
+
+        <div id="doseHCQ" class="hidden">
+          <div class="row">
+            <div>
+              <label>HCQ daily dose (mg/day)</label>
+              <select id="hcqDailyMg">
+                <option value="">Select…</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+              </select>
+            </div>
+            <div>
+              <label>HCQ total duration (months)</label>
+              <input type="number" id="hcqMonths" min="0" step="1" />
+            </div>
+          </div>
+          <div class="small mono" id="hcqCume">Cumulative dose: —</div>
+        </div>
+
+        <label>Other medication details</label>
+        <textarea id="medOtherText"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- MOVED DOWN: MODULE SELECTION -->
+      <h2>Select module(s) for this patient</h2>
+      <div class="checks" id="moduleChecks"></div>
+
+      <div class="divider"></div>
+
+      <!-- CRIS MODULE -->
+      <div class="card hidden" id="modCRIS">
+        <div class="moduleTitle">
+          <h2>CRIS – Cornea–Rheumat Interface Sheet</h2>
+          <span class="pill" id="pillCRIS">Pending</span>
+        </div>
+
+        <div class="miniGrid3">
+          <div></div>
+          <div class="small" style="font-weight:800;color:#111827;">OD</div>
+          <div class="small" style="font-weight:800;color:#111827;">OS</div>
+        </div>
+
+        <div class="miniGrid3">
+          <div><label>DEQ5 score</label></div>
+          <div><label>&nbsp;</label><input type="number" id="deq5OD" min="0" max="25" step="1"></div>
+          <div><label>&nbsp;</label><input type="number" id="deq5OS" min="0" max="25" step="1"></div>
+        </div>
+
+        <div class="miniGrid3">
+          <div><label>Schirmer’s 1 wetting @ 5 mins (mm)</label></div>
+          <div><label>&nbsp;</label><input type="number" id="schOD" min="0" step="1"></div>
+          <div><label>&nbsp;</label><input type="number" id="schOS" min="0" step="1"></div>
+        </div>
+
+        <div class="miniGrid3">
+          <div><label>Corneal staining: Mild/Mod/Severe</label></div>
+          <div>
+            <label>&nbsp;</label>
+            <select id="stainOD">
+              <option value="">Select…</option><option>Mild</option><option>Moderate</option><option>Severe</option>
+            </select>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <select id="stainOS">
+              <option value="">Select…</option><option>Mild</option><option>Moderate</option><option>Severe</option>
+            </select>
+          </div>
+        </div>
+
+        <label>On topical cyclosporine</label>
+        <select id="cycloUse">
+          <option value="">Select…</option><option>No</option><option>Yes</option>
+        </select>
+        <div id="cycloNameBlock" class="hidden">
+          <label>Name</label>
+          <input type="text" id="cycloName" />
+        </div>
+
+        <label>On topical steroids</label>
+        <select id="topSterUse">
+          <option value="">Select…</option><option>No</option><option>Yes</option>
+        </select>
+        <div id="topSterNameBlock" class="hidden">
+          <label>Name / dose</label>
+          <input type="text" id="topSterName" />
+        </div>
+
+        <div class="divider"></div>
+
+        <label>Follow up clinical status</label>
+        <div class="miniGrid3">
+          <div></div>
+          <div>
+            <select id="crisFU_OD">
+              <option value="">OD – Select…</option>
+              <option>Baseline</option>
+              <option>Improved</option>
+              <option>Worsened</option>
+              <option>Status quo</option>
+            </select>
+          </div>
+          <div>
+            <select id="crisFU_OS">
+              <option value="">OS – Select…</option>
+              <option>Baseline</option>
+              <option>Improved</option>
+              <option>Worsened</option>
+              <option>Status quo</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Clearance for elective surgery</label>
+        <select id="crisElectiveClear">
+          <option value="">Select…</option>
+          <option>Not applicable</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <h2 style="font-size:14px;margin:0 0 6px 0;">Emergency Conditions (OD/OS/OU)</h2>
+        <div class="checks onecol" id="crisEmergODOS"></div>
+
+        <div class="divider"></div>
+
+        <h2 style="font-size:14px;margin:0 0 6px 0;">Coordination / escalation</h2>
+        <div class="checks onecol" id="crisCoordChecks"></div>
+
+        <div class="divider"></div>
+
+        <label>Ophthalmologist’s impression</label>
+        <textarea id="crisImpression"></textarea>
+
+        <label>Additional notes</label>
+        <textarea id="crisNotes"></textarea>
+
+        <div class="divider"></div>
+        <button class="primary" type="button" onclick="markDone('pillCRIS')">Mark CRIS complete</button>
+      </div>
+
+      <!-- URIS MODULE -->
+      <div class="card hidden" id="modURIS">
+        <div class="moduleTitle">
+          <h2>URIS – Uvea–Rheumat Interface Sheet</h2>
+          <span class="pill" id="pillURIS">Pending</span>
+        </div>
+
+        <label>Visit</label>
+        <select id="urisVisit">
+          <option value="">Select…</option>
+          <option>First visit</option>
+          <option>Follow-up visit</option>
+        </select>
+
+        <label>Uveitis status</label>
+        <select id="uvStatus">
+          <option value="">Select…</option>
+          <option>Active</option>
+          <option>Resolving</option>
+          <option>Relapse / flare</option>
+          <option>Recurrent</option>
+          <option>Resolved / in remission</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <label>Uveitis anatomical type</label>
+        <select id="uvAnat">
+          <option value="">Select…</option>
+          <option>Anterior</option>
+          <option>Intermediate</option>
+          <option>Posterior</option>
+          <option>Panuveitis</option>
+        </select>
+
+        <label>Uveitis nature</label>
+        <select id="uvNature">
+          <option value="">Select…</option>
+          <option>Granulomatous</option>
+          <option>Non-granulomatous</option>
+          <option>Not sure / evolving</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <label>Likely / confirmed diagnosis (tick that applies)</label>
+        <div class="checks" id="uvDxChecks"></div>
+
+        <label>Final uveitis diagnosis (if known)</label>
+        <input type="text" id="uvFinalDx" placeholder="(optional)" />
+
+        <div class="divider"></div>
+
+        <label>Episode pattern</label>
+        <select id="uvEpisode">
+          <option value="">Select…</option>
+          <option>First episode – untreated</option>
+          <option>First episode – on treatment</option>
+          <option>Recurrent episode – untreated</option>
+          <option>Recurrent episode – on treatment</option>
+        </select>
+
+        <label>Number of episodes (last 1–2 years)</label>
+        <select id="uvEpisodesCount">
+          <option value="">Select…</option>
+          <option>1</option><option>2</option><option>3</option><option>4+</option>
+        </select>
+
+        <label>Was prior treatment course completed?</label>
+        <select id="uvCourseCompleted">
+          <option value="">Select…</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>Not sure</option>
+          <option>Not applicable (first episode)</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <h2 style="font-size:14px;margin:0 0 6px 0;">Topical treatment</h2>
+
+        <label>Topical steroids</label>
+        <div class="row">
+          <select id="uTopSterUse">
+            <option value="">Select…</option><option>No</option><option>Yes</option>
+          </select>
+          <select id="uTopSterLat">
+            <option value="">Laterality…</option><option>OD</option><option>OS</option><option>OU</option>
+          </select>
+        </div>
+        <div id="uTopSterNameBlock" class="hidden">
+          <label>Name</label>
+          <input type="text" id="uTopSterName" />
+        </div>
+
+        <label>Topical NSAID</label>
+        <div class="row">
+          <select id="uNSAIDUse">
+            <option value="">Select…</option><option>No</option><option>Yes</option>
+          </select>
+          <select id="uNSAIDLat">
+            <option value="">Laterality…</option><option>OD</option><option>OS</option><option>OU</option>
+          </select>
+        </div>
+        <div id="uNSAIDNameBlock" class="hidden">
+          <label>Name</label>
+          <input type="text" id="uNSAIDName" />
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="font-size:14px;margin:0 0 6px 0;">Coordination / action items</h2>
+        <div class="checks onecol" id="uvActionChecks"></div>
+
+        <label>Need rheumatology clearance for surgery?</label>
+        <select id="uvSurgClear">
+          <option value="">Select…</option>
+          <option>No surgery planned</option>
+          <option>Yes – elective surgery planned</option>
+          <option>Yes – emergency surgery planned</option>
+        </select>
+
+        <label>Ophthalmologist input</label>
+        <textarea id="urisNotes"></textarea>
+
+        <div class="divider"></div>
+        <button class="primary" type="button" onclick="markDone('pillURIS')">Mark URIS complete</button>
+      </div>
+
+      <!-- HCQ SCREENING MODULE -->
+      <div class="card hidden" id="modHCQ">
+        <div class="moduleTitle">
+          <h2>HCQ Screening</h2>
+          <span class="pill" id="pillHCQ">Pending</span>
+        </div>
+
+        <label>HCQ screening type</label>
+        <select id="hcqScreenType">
+          <option value="">Select…</option>
+          <option>Baseline</option>
+          <option>Annual / Follow-up</option>
+        </select>
+
+        <div class="divider"></div>
+
+        <label>Tests performed (tick all)</label>
+        <div class="checks" id="hcqTestChecks"></div>
+
+        <div class="divider"></div>
+
+        <label>Signs of toxicity</label>
+        <select id="hcqTox">
+          <option value="">Select…</option>
+          <option>No</option>
+          <option>Yes</option>
+          <option>Equivocal / needs review</option>
+        </select>
+
+        <label>Notes</label>
+        <textarea id="hcqNotes"></textarea>
+
+        <div class="divider"></div>
+        <button class="primary" type="button" onclick="markDone('pillHCQ')">Mark HCQ Screening complete</button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: PRINT SUMMARY -->
+    <div class="card">
+      <h2>Printable Summary (PDF)</h2>
+      <div class="small">Only this summary prints/saves as PDF.</div>
+      <div class="divider"></div>
+      <div id="printArea"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const $ = (id)=>document.getElementById(id);
+  const nowStamp = ()=> new Date().toLocaleString();
+
+  function escapeHtml(str){
+    return String(str||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+  }
+  function makeChecks(containerId, items, oneCol=false){
+    const el = $(containerId);
+    el.innerHTML = "";
+    if(oneCol) el.classList.add("onecol");
+    items.forEach((txt)=>{
+      const wrap = document.createElement("label");
+      wrap.className = "check";
+      wrap.innerHTML = `<input type="checkbox" data-value="${escapeHtml(txt)}" /> <span>${escapeHtml(txt)}</span>`;
+      el.appendChild(wrap);
+    });
+  }
+  function getChecked(containerId){
+    return Array.from($(containerId).querySelectorAll('input[type="checkbox"]:checked'))
+      .map(cb => cb.getAttribute("data-value"));
+  }
+  function markDone(pillId){
+    const el = $(pillId);
+    el.textContent = "Complete";
+    el.classList.add("ok");
+    updatePrint();
+  }
+  function statusOf(pillId){ return $(pillId).classList.contains("ok") ? "Complete" : "Pending"; }
+
+  // Rheumatologist sheet systemic dx (common)
+  makeChecks("sysDxChecks", [
+    "Sjogren’s disease – Primary",
+    "Sjogren’s disease – Secondary",
+    "Rheumatoid arthritis (RA)",
+    "SLE",
+    "Spondyloarthropathy / HLA-B27 spectrum",
+    "Behçet’s",
+    "JIA",
+    "Sarcoidosis",
+    "Tuberculosis (TB)",
+    "Vasculitis",
+    "Others"
+  ]);
+
+  // Systemic meds selection
+  makeChecks("medChecks", [
+    "Steroid",
+    "Methotrexate",
+    "Hydroxychloroquine (HCQ)",
+    "Sulfasalazine",
+    "Biologicals",
+    "JAK inhibitors",
+    "Others"
+  ]);
+
+  // Module selection
+  makeChecks("moduleChecks", ["CRIS (Cornea–Rheumat)","URIS (Uvea–Rheumat)","HCQ Screening"]);
+
+  // CRIS emergency conditions (ADD Emergency surgery back after corneal infection)
+  const crisEmergItems = [
+    "Necrotising scleritis",
+    "Non-necrotising scleritis",
+    "PUK",
+    "Corneal perforation",
+    "Corneal infection",
+    "Emergency surgery"
+  ];
+  (function buildCrisEmerg(){
+    const el = $("crisEmergODOS");
+    el.innerHTML = "";
+    crisEmergItems.forEach(name=>{
+      const row = document.createElement("div");
+      row.style.display = "grid";
+      row.style.gridTemplateColumns = "1.2fr .8fr";
+      row.style.gap = "10px";
+      row.style.marginBottom = "8px";
+      row.innerHTML = `
+        <div class="check" style="background:#f3f4f6;">
+          <input type="checkbox" data-ename="${escapeHtml(name)}" />
+          <span>${escapeHtml(name)}</span>
+        </div>
+        <select data-elat="${escapeHtml(name)}" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);">
+          <option value="">Laterality…</option>
+          <option>OD</option><option>OS</option><option>OU</option>
+        </select>
+      `;
+      el.appendChild(row);
+    });
+  })();
+
+  // CRIS coordination / escalation
+  makeChecks("crisCoordChecks", [
+    "Need for IVMP",
+    "Need for Pulse Cyclophosphamide",
+    "Need for Biologicals",
+    "Need to increase immunomodulation",
+    "Need to stop immunomodulation",
+    "Need for systemic steroids"
+  ], true);
+
+  // URIS dx list
+  makeChecks("uvDxChecks", [
+    "HLA-B27 spectrum",
+    "JIA (Juvenile idiopathic arthritis)",
+    "Behçet’s",
+    "Tuberculosis (TB)",
+    "Sarcoidosis",
+    "Fuchs heterochromic iridocyclitis",
+    "Idiopathic granulomatous",
+    "Idiopathic non-granulomatous",
+    "Other (specify)"
+  ]);
+
+  // URIS action items
+  makeChecks("uvActionChecks", [
+    "Need TB workup",
+    "Need Sarcoid workup",
+    "Consider escalation of immunomodulation",
+    "Consider reduction / hold immunosuppression (if infection suspected)",
+    "Need rheumatology review / medication reconciliation"
+  ], true);
+
+  // HCQ module checks init
+  makeChecks("hcqTestChecks", [
+    "Macula OCT",
+    "Fundus photo",
+    "HVF 10-2/24-2",
+    "MF-ERG (if required)"
+  ]);
+
+  function toggleModules(){
+    const mods = getChecked("moduleChecks");
+    $("modCRIS").classList.toggle("hidden", !mods.includes("CRIS (Cornea–Rheumat)"));
+    $("modURIS").classList.toggle("hidden", !mods.includes("URIS (Uvea–Rheumat)"));
+    $("modHCQ").classList.toggle("hidden", !mods.includes("HCQ Screening"));
+    updatePrint();
+  }
+
+  function toggleMeds(){
+    const meds = getChecked("medChecks");
+    const any = meds.length > 0;
+    $("medDoses").classList.toggle("hidden", !any);
+
+    $("doseSteroid").classList.toggle("hidden", !meds.includes("Steroid"));
+    $("doseMTX").classList.toggle("hidden", !meds.includes("Methotrexate"));
+    $("doseHCQ").classList.toggle("hidden", !meds.includes("Hydroxychloroquine (HCQ)"));
+
+    updateHCQCume();
+    updatePrint();
+  }
+
+  function updateHCQCume(){
+    const daily = parseFloat($("hcqDailyMg").value || "0");
+    const months = parseFloat($("hcqMonths").value || "0");
+    const days = months * 30.44;
+    const mg = daily * days;
+    const g = mg / 1000;
+    $("hcqCume").textContent = (daily && months)
+      ? `Cumulative dose (approx): ${g.toFixed(1)} g ( ${Math.round(mg).toLocaleString()} mg )`
+      : "Cumulative dose: —";
+  }
+
+  $("hcqDailyMg").addEventListener("change", ()=>{ updateHCQCume(); updatePrint(); });
+  $("hcqMonths").addEventListener("input", ()=>{ updateHCQCume(); updatePrint(); });
+
+  // CRIS dependent fields
+  $("cycloUse").addEventListener("change", ()=>{
+    $("cycloNameBlock").classList.toggle("hidden", $("cycloUse").value !== "Yes");
+    updatePrint();
+  });
+  $("topSterUse").addEventListener("change", ()=>{
+    $("topSterNameBlock").classList.toggle("hidden", $("topSterUse").value !== "Yes");
+    updatePrint();
+  });
+
+  // URIS topical toggles
+  function toggleUveaTopicals(){
+    $("uTopSterNameBlock").classList.toggle("hidden", $("uTopSterUse").value !== "Yes");
+    $("uNSAIDNameBlock").classList.toggle("hidden", $("uNSAIDUse").value !== "Yes");
+    updatePrint();
+  }
+  $("uTopSterUse").addEventListener("change", toggleUveaTopicals);
+  $("uNSAIDUse").addEventListener("change", toggleUveaTopicals);
+
+  function getCrisEmergSelected(){
+    const items = [];
+    const checks = Array.from($("crisEmergODOS").querySelectorAll('input[type="checkbox"]'));
+    checks.forEach(cb=>{
+      if(cb.checked){
+        const name = cb.getAttribute("data-ename");
+        const latSel = $("crisEmergODOS").querySelector(`select[data-elat="${CSS.escape(name)}"]`);
+        const lat = latSel ? latSel.value : "";
+        items.push(lat ? `${name} (${lat})` : name);
+      }
+    });
+    return items;
+  }
+
+  function buildPrint(){
+    const mods = getChecked("moduleChecks");
+    const meds = getChecked("medChecks");
+    const sysDx = getChecked("sysDxChecks");
+
+    let html = `
+      <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <img src="CODE EYE CARE LOGO-02.png" style="height:42px;width:auto;object-fit:contain;" />
+          <div><div style="font-size:16px;font-weight:800;margin-bottom:2px;">CODE Eye Care – Rheumatology Interface Summary</div></div>
+        </div>
+        <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
+        <div><b>Patient:</b> ${escapeHtml($("ptName").value||"—")} &nbsp; | &nbsp; <b>CEC:</b> ${escapeHtml($("cecNo").value||"—")}</div>
+        <div><b>Rheumatologist:</b> ${escapeHtml($("rheumName").value||"—")}</div>
+        <div><b>Visit type:</b> ${escapeHtml($("visitType").value||"—")}</div>
+        <div><b>Modules included:</b> ${mods.length?mods.join(", "):"—"}</div>
+      </div>
+    `;
+
+    html += `
+      <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div style="font-weight:800;margin-bottom:6px;">Rheumatologist Sheet</div>
+        <div><b>Systemic diagnosis:</b> ${sysDx.length?sysDx.join(", "):"—"}</div>
+        <div><b>Final systemic diagnosis:</b> ${escapeHtml($("sysFinalDx").value||"—")}</div>
+        <div><b>Serology status:</b> ${escapeHtml($("seroStatus").value||"—")}</div>
+        <div><b>Status:</b> ${escapeHtml($("diseaseStatus").value||"—")}</div>
+        <div><b>Treatment target:</b> ${escapeHtml($("treatTarget").value||"—")}</div>
+        <div><b>Disease activity score:</b> ${escapeHtml($("dasScore").value||"—")}</div>
+        <div><b>ESR:</b> ${escapeHtml($("esr").value||"—")} &nbsp; | &nbsp; <b>CRP:</b> ${escapeHtml($("crp").value||"—")}</div>
+        <div><b>Rheumatologist’s impression:</b> ${$("rheumImpression").value.trim()?escapeHtml($("rheumImpression").value.trim()):"—"}</div>
+      </div>
+    `;
+
+    if (meds.length){
+      html += `
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+          <div style="font-weight:800;margin-bottom:6px;">Current systemic medications</div>
+          <div><b>Meds:</b> ${meds.join(", ")}</div>
+      `;
+      if (meds.includes("Steroid")){
+        html += `<div><b>Steroid dose/regimen:</b> ${escapeHtml($("steroidDose").value||"—")}</div>`;
+      }
+      if (meds.includes("Methotrexate")){
+        html += `<div><b>Methotrexate:</b> ${escapeHtml($("mtxMgWeek").value||"—")} mg/week</div>`;
+      }
+      if (meds.includes("Hydroxychloroquine (HCQ)")){
+        const daily = $("hcqDailyMg").value || "—";
+        const months = $("hcqMonths").value || "—";
+        html += `<div><b>HCQ:</b> ${escapeHtml(daily)} mg/day | ${escapeHtml(months)} months</div>`;
+        html += `<div><b>HCQ cumulative dose:</b> ${escapeHtml($("hcqCume").textContent.replace("Cumulative dose (approx): ",""))}</div>`;
+      }
+      if ($("medOtherText").value.trim()){
+        html += `<div><b>Other details:</b> ${escapeHtml($("medOtherText").value.trim())}</div>`;
+      }
+      html += `</div>`;
+    }
+
+    if (mods.includes("CRIS (Cornea–Rheumat)")){
+      const crisEmerg = getCrisEmergSelected();
+      const crisCoord = getChecked("crisCoordChecks");
+      html += `
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+          <div style="font-weight:800;margin-bottom:6px;">CRIS – Cornea–Rheumat Interface</div>
+          <div><b>Status:</b> ${statusOf("pillCRIS")}</div>
+          <div><b>DEQ5:</b> OD ${escapeHtml($("deq5OD").value||"—")} | OS ${escapeHtml($("deq5OS").value||"—")}</div>
+          <div><b>Schirmer’s 1 @5 min:</b> OD ${escapeHtml($("schOD").value||"—")} mm | OS ${escapeHtml($("schOS").value||"—")} mm</div>
+          <div><b>Corneal staining:</b> OD ${escapeHtml($("stainOD").value||"—")} | OS ${escapeHtml($("stainOS").value||"—")}</div>
+          <div><b>Topical cyclosporine:</b> ${escapeHtml($("cycloUse").value||"—")} ${$("cycloUse").value==="Yes" ? (" – "+escapeHtml($("cycloName").value||"—")) : ""}</div>
+          <div><b>Topical steroids:</b> ${escapeHtml($("topSterUse").value||"—")} ${$("topSterUse").value==="Yes" ? (" – "+escapeHtml($("topSterName").value||"—")) : ""}</div>
+          <div><b>Follow-up clinical status:</b> OD ${escapeHtml($("crisFU_OD").value||"—")} | OS ${escapeHtml($("crisFU_OS").value||"—")}</div>
+          <div><b>Clearance for elective surgery:</b> ${escapeHtml($("crisElectiveClear").value||"—")}</div>
+          <div><b>Emergency conditions:</b> ${crisEmerg.length?crisEmerg.join(", "):"—"}</div>
+          <div><b>Coordination / escalation:</b> ${crisCoord.length?crisCoord.join(", "):"—"}</div>
+          ${$("crisImpression").value.trim() ? `<div><b>Ophthalmologist’s impression:</b> ${escapeHtml($("crisImpression").value.trim())}</div>` : ""}
+          ${$("crisNotes").value.trim() ? `<div><b>Additional notes:</b> ${escapeHtml($("crisNotes").value.trim())}</div>` : ""}
+        </div>
+      `;
+    }
+
+    if (mods.includes("URIS (Uvea–Rheumat)")){
+      const dx = getChecked("uvDxChecks");
+      const acts = getChecked("uvActionChecks");
+      const topSter = $("uTopSterUse").value;
+      const topSterLat = $("uTopSterLat").value;
+      const topSterName = $("uTopSterName").value.trim();
+      const nsaid = $("uNSAIDUse").value;
+      const nsaidLat = $("uNSAIDLat").value;
+      const nsaidName = $("uNSAIDName").value.trim();
+
+      html += `
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+          <div style="font-weight:800;margin-bottom:6px;">URIS – Uvea–Rheumat Interface</div>
+          <div><b>Status:</b> ${statusOf("pillURIS")}</div>
+          <div><b>Visit:</b> ${escapeHtml($("urisVisit").value||"—")}</div>
+          <div><b>Uveitis status:</b> ${escapeHtml($("uvStatus").value||"—")}</div>
+          <div><b>Anatomical type:</b> ${escapeHtml($("uvAnat").value||"—")}</div>
+          <div><b>Nature:</b> ${escapeHtml($("uvNature").value||"—")}</div>
+          <div><b>Likely/confirmed diagnosis:</b> ${dx.length?dx.join(", "):"—"}</div>
+          <div><b>Final uveitis diagnosis:</b> ${escapeHtml($("uvFinalDx").value||"—")}</div>
+          <div><b>Episode pattern:</b> ${escapeHtml($("uvEpisode").value||"—")}</div>
+          <div><b>Episodes (last 1–2 years):</b> ${escapeHtml($("uvEpisodesCount").value||"—")}</div>
+          <div><b>Prior course completed:</b> ${escapeHtml($("uvCourseCompleted").value||"—")}</div>
+          <div><b>Topical steroids:</b> ${escapeHtml(topSter||"—")}${topSter==="Yes" ? ` (${escapeHtml(topSterLat||"—")}) – ${escapeHtml(topSterName||"—")}` : ""}</div>
+          <div><b>Topical NSAID:</b> ${escapeHtml(nsaid||"—")}${nsaid==="Yes" ? ` (${escapeHtml(nsaidLat||"—")}) – ${escapeHtml(nsaidName||"—")}` : ""}</div>
+          <div><b>Action items:</b> ${acts.length?acts.join(", "):"—"}</div>
+          <div><b>Surgery clearance:</b> ${escapeHtml($("uvSurgClear").value||"—")}</div>
+          ${$("urisNotes").value.trim() ? `<div><b>Ophthalmologist input:</b> ${escapeHtml($("urisNotes").value.trim())}</div>` : ""}
+        </div>
+      `;
+    }
+
+    if (mods.includes("HCQ Screening")){
+      const tests = getChecked("hcqTestChecks");
+      html += `
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+          <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
+          <div><b>Status:</b> ${statusOf("pillHCQ")}</div>
+          <div><b>Type:</b> ${escapeHtml($("hcqScreenType").value||"—")}</div>
+          <div><b>Tests:</b> ${tests.length?tests.join(", "):"—"}</div>
+          <div><b>Signs of toxicity:</b> ${escapeHtml($("hcqTox").value||"—")}</div>
+          ${$("hcqNotes").value.trim() ? `<div><b>Notes:</b> ${escapeHtml($("hcqNotes").value.trim())}</div>` : ""}
+        </div>
+      `;
+    }
+
+    html += `
+      <div style="margin-top:14px;text-align:center;font-size:10px;color:#444;">
+        <div><b>CODE Eye Care</b></div>
+        <div style="color:#666;">Generated • ${escapeHtml(nowStamp())}</div>
+      </div>
+    `;
+    return html;
+  }
+
+  function updatePrint(){ $("printArea").innerHTML = buildPrint(); }
+
+  function printOnly(){
+    const html = buildPrint();
+    const w = window.open("", "_blank");
+    w.document.open();
+    w.document.write(`
+      <!doctype html><html><head><meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>CODE Eye Care – Rheumatology Interface Summary</title>
+      <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;} img{max-width:100%;}</style>
+      </head><body>${html}<script>window.onload=()=>{window.print();}<\/script></body></html>
+    `);
+    w.document.close();
+  }
+
+  function downloadCSV(){
+    const mods = getChecked("moduleChecks").join("; ");
+    const meds = getChecked("medChecks").join("; ");
+    const sysDx = getChecked("sysDxChecks").join("; ");
+    const data = {
+      stamp: nowStamp(),
+      patient: $("ptName").value.trim(),
+      cec: $("cecNo").value.trim(),
+      rheumatologist: $("rheumName").value.trim(),
+      visitType: $("visitType").value,
+      systemicDiagnosis: sysDx,
+      systemicFinalDx: $("sysFinalDx").value.trim(),
+      serologyStatus: $("seroStatus").value,
+      diseaseStatus: $("diseaseStatus").value,
+      treatmentTarget: $("treatTarget").value,
+      diseaseActivityScore: $("dasScore").value.trim(),
+      esr: $("esr").value.trim(),
+      crp: $("crp").value.trim(),
+      rheumImpression: $("rheumImpression").value.trim(),
+      modules: mods,
+      meds: meds
+    };
+    const headers = Object.keys(data);
+    const values = headers.map(h => String(data[h] ?? "").replaceAll('"','""'));
+    const csv = headers.map(h=>`"${h}"`).join(",") + "\n" + values.map(v=>`"${v}"`).join(",");
+
+    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `CODE_Rheum_${(data.cec||"CEC").replaceAll(" ","_")}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  $("btnPrint").addEventListener("click", ()=>{ updatePrint(); printOnly(); });
+  $("btnCSV").addEventListener("click", downloadCSV);
+  $("btnReset").addEventListener("click", ()=>{ if (confirm("Reset all fields?")) location.reload(); });
+
+  $("moduleChecks").addEventListener("change", toggleModules);
+  $("medChecks").addEventListener("change", toggleMeds);
+
+  $("hcqDailyMg").addEventListener("change", ()=>{ updateHCQCume(); updatePrint(); });
+  $("hcqMonths").addEventListener("input", ()=>{ updateHCQCume(); updatePrint(); });
+
+  $("cycloUse").addEventListener("change", ()=>{
+    $("cycloNameBlock").classList.toggle("hidden", $("cycloUse").value !== "Yes");
+    updatePrint();
+  });
+  $("topSterUse").addEventListener("change", ()=>{
+    $("topSterNameBlock").classList.toggle("hidden", $("topSterUse").value !== "Yes");
+    updatePrint();
+  });
+
+  function toggleUveaTopicals(){
+    $("uTopSterNameBlock").classList.toggle("hidden", $("uTopSterUse").value !== "Yes");
+    $("uNSAIDNameBlock").classList.toggle("hidden", $("uNSAIDUse").value !== "Yes");
+    updatePrint();
+  }
+  $("uTopSterUse").addEventListener("change", toggleUveaTopicals);
+  $("uNSAIDUse").addEventListener("change", toggleUveaTopicals);
+
+  function toggleModules(){
+    const mods = getChecked("moduleChecks");
+    $("modCRIS").classList.toggle("hidden", !mods.includes("CRIS (Cornea–Rheumat)"));
+    $("modURIS").classList.toggle("hidden", !mods.includes("URIS (Uvea–Rheumat)"));
+    $("modHCQ").classList.toggle("hidden", !mods.includes("HCQ Screening"));
+    updatePrint();
+  }
+
+  function toggleMeds(){
+    const meds = getChecked("medChecks");
+    const any = meds.length > 0;
+    $("medDoses").classList.toggle("hidden", !any);
+
+    $("doseSteroid").classList.toggle("hidden", !meds.includes("Steroid"));
+    $("doseMTX").classList.toggle("hidden", !meds.includes("Methotrexate"));
+    $("doseHCQ").classList.toggle("hidden", !meds.includes("Hydroxychloroquine (HCQ)"));
+
+    updateHCQCume();
+    updatePrint();
+  }
+
+  function updateHCQCume(){
+    const daily = parseFloat($("hcqDailyMg").value || "0");
+    const months = parseFloat($("hcqMonths").value || "0");
+    const days = months * 30.44;
+    const mg = daily * days;
+    const g = mg / 1000;
+    $("hcqCume").textContent = (daily && months)
+      ? `Cumulative dose (approx): ${g.toFixed(1)} g ( ${Math.round(mg).toLocaleString()} mg )`
+      : "Cumulative dose: —";
+  }
+
+  function getCrisEmergSelected(){
+    const items = [];
+    const checks = Array.from($("crisEmergODOS").querySelectorAll('input[type="checkbox"]'));
+    checks.forEach(cb=>{
+      if(cb.checked){
+        const name = cb.getAttribute("data-ename");
+        const latSel = $("crisEmergODOS").querySelector(`select[data-elat="${CSS.escape(name)}"]`);
+        const lat = latSel ? latSel.value : "";
+        items.push(lat ? `${name} (${lat})` : name);
+      }
+    });
+    return items;
+  }
+
+  // Live update
+  document.addEventListener("input", updatePrint);
+  document.addEventListener("change", updatePrint);
+
+  // Init
+  toggleModules();
+  toggleMeds();
+  toggleUveaTopicals();
+  updatePrint();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<div class="card module-card">
+  <div class="moduleTitle">
+    <h2>HCQ Screening</h2>
+    <span class="pill" [class.ok]="completed">{{ completed ? 'Complete' : 'Pending' }}</span>
+  </div>
+
+  <form [formGroup]="hcqForm">
+    <label for="screeningType">HCQ screening type</label>
+    <select id="screeningType" formControlName="screeningType">
+      <option value="">Select…</option>
+      <option *ngFor="let type of screeningTypes" [value]="type">{{ type }}</option>
+    </select>
+
+    <div class="divider"></div>
+
+    <label>Tests performed (tick all)</label>
+    <div class="checks">
+      <label *ngFor="let test of tests" class="check">
+        <input
+          type="checkbox"
+          [checked]="isTestChecked(test)"
+          (change)="onTestChange(test, $event)"
+        />
+        <span>{{ test }}</span>
+      </label>
+    </div>
+
+    <div class="divider"></div>
+
+    <label for="toxicitySigns">Signs of toxicity</label>
+    <select id="toxicitySigns" formControlName="toxicitySigns">
+      <option value="">Select…</option>
+      <option *ngFor="let option of toxicityOptions" [value]="option">{{ option }}</option>
+    </select>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" formControlName="notes"></textarea>
+
+    <div class="divider"></div>
+    <button class="primary" type="button" (click)="markComplete()">Mark HCQ Screening complete</button>
+  </form>
+</div>

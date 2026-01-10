@@ -1,0 +1,151 @@
+<div class="card module-card">
+  <div class="moduleTitle">
+    <h2>CRIS – Cornea–Rheumat Interface Sheet</h2>
+    <span class="pill" [class.ok]="completed">{{ completed ? 'Complete' : 'Pending' }}</span>
+  </div>
+
+  <form [formGroup]="crisForm">
+    <div class="miniGrid3">
+      <div></div>
+      <div class="small header-label">OD</div>
+      <div class="small header-label">OS</div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>DEQ5 score</label></div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="deq5OD" min="0" max="25" step="1" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="deq5OS" min="0" max="25" step="1" />
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Schirmer's 1 wetting @ 5 mins (mm)</label></div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="schirmerOD" min="0" step="1" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="schirmerOS" min="0" step="1" />
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Corneal staining: Mild/Mod/Severe</label></div>
+      <div>
+        <label>&nbsp;</label>
+        <select formControlName="cornealStainingOD">
+          <option value="">Select…</option>
+          <option *ngFor="let level of cornealStainingLevels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <select formControlName="cornealStainingOS">
+          <option value="">Select…</option>
+          <option *ngFor="let level of cornealStainingLevels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="cyclosporine">On topical cyclosporine</label>
+    <select id="cyclosporine" formControlName="topicalCyclosporine">
+      <option value="">Select…</option>
+      <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+    </select>
+    <div *ngIf="showCyclosporineName()">
+      <label for="cyclosporineName">Name</label>
+      <input type="text" id="cyclosporineName" formControlName="cyclosporineName" />
+    </div>
+
+    <label for="steroids">On topical steroids</label>
+    <select id="steroids" formControlName="topicalSteroids">
+      <option value="">Select…</option>
+      <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+    </select>
+    <div *ngIf="showSteroidsName()">
+      <label for="steroidsName">Name / dose</label>
+      <input type="text" id="steroidsName" formControlName="topicalSteroidsName" />
+    </div>
+
+    <div class="divider"></div>
+
+    <label>Follow up clinical status</label>
+    <div class="miniGrid3">
+      <div></div>
+      <div>
+        <select formControlName="followUpOD">
+          <option value="">OD – Select…</option>
+          <option *ngFor="let status of followUpStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="followUpOS">
+          <option value="">OS – Select…</option>
+          <option *ngFor="let status of followUpStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="electiveSurgery">Clearance for elective surgery</label>
+    <select id="electiveSurgery" formControlName="electiveSurgeryClearance">
+      <option value="">Select…</option>
+      <option *ngFor="let clearance of electiveSurgeryClearances" [value]="clearance">{{ clearance }}</option>
+    </select>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title">Emergency Conditions (OD/OS/OU)</h2>
+    <div class="emergency-conditions">
+      <div *ngFor="let condition of emergencyConditionsList; let i = index" class="emergency-row">
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="condition.checked"
+            (change)="onEmergencyConditionChange(i, $event)"
+          />
+          <span>{{ condition.name }}</span>
+        </label>
+        <select
+          [value]="condition.laterality"
+          (change)="onLateralityChange(i, $event)"
+        >
+          <option value="">Laterality…</option>
+          <option value="OD">OD</option>
+          <option value="OS">OS</option>
+          <option value="OU">OU</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title">Coordination / escalation</h2>
+    <div class="checks onecol">
+      <label *ngFor="let item of coordinationItems" class="check">
+        <input
+          type="checkbox"
+          [checked]="isCoordinationChecked(item)"
+          (change)="onCoordinationChange(item, $event)"
+        />
+        <span>{{ item }}</span>
+      </label>
+    </div>
+
+    <div class="divider"></div>
+
+    <label for="impression">Ophthalmologist's impression</label>
+    <textarea id="impression" formControlName="ophthalmologistImpression"></textarea>
+
+    <label for="notes">Additional notes</label>
+    <textarea id="notes" formControlName="additionalNotes"></textarea>
+
+    <div class="divider"></div>
+    <button class="primary" type="button" (click)="markComplete()">Mark CRIS complete</button>
+  </form>
+</div>

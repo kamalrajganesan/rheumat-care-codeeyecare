@@ -1,0 +1,41 @@
+.module-card {
+  margin-top: 14px;
+}
+
+.header-label {
+  font-weight: 800;
+  color: #111827;
+}
+
+.section-title {
+  font-size: 14px;
+  margin: 0 0 6px 0;
+}
+
+.emergency-conditions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emergency-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 10px;
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .check {
+    background: #f3f4f6;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+}

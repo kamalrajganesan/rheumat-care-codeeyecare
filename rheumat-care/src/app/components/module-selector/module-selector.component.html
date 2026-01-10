@@ -1,0 +1,11 @@
+<h2>Select module(s) for this patient</h2>
+<div class="checks">
+  <label *ngFor="let module of modules" class="check">
+    <input
+      type="checkbox"
+      [checked]="isModuleSelected(module)"
+      (change)="onModuleChange(module, $event)"
+    />
+    <span>{{ module }}</span>
+  </label>
+</div>

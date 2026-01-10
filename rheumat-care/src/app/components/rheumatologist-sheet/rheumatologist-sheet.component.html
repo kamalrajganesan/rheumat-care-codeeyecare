@@ -1,0 +1,67 @@
+<h2>Rheumatologist Sheet (Common)</h2>
+<form [formGroup]="rheumatologistForm">
+  <label>Systemic diagnosis (tick that applies)</label>
+  <div class="checks">
+    <label *ngFor="let diagnosis of systemicDiagnoses" class="check">
+      <input
+        type="checkbox"
+        [checked]="isDiagnosisChecked(diagnosis)"
+        (change)="onDiagnosisChange(diagnosis, $event)"
+      />
+      <span>{{ diagnosis }}</span>
+    </label>
+  </div>
+
+  <label for="finalSystemicDiagnosis">Final systemic diagnosis (if known)</label>
+  <input
+    type="text"
+    id="finalSystemicDiagnosis"
+    formControlName="finalSystemicDiagnosis"
+    placeholder="(optional)"
+  />
+
+  <div class="row">
+    <div>
+      <label for="serologyStatus">Serology status</label>
+      <select id="serologyStatus" formControlName="serologyStatus">
+        <option value="">Select…</option>
+        <option *ngFor="let status of serologyStatuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+    <div>
+      <label for="diseaseStatus">Status</label>
+      <select id="diseaseStatus" formControlName="diseaseStatus">
+        <option value="">Select…</option>
+        <option *ngFor="let status of diseaseStatuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="treatmentTarget">Treatment target</label>
+      <select id="treatmentTarget" formControlName="treatmentTarget">
+        <option value="">Select…</option>
+        <option *ngFor="let target of treatmentTargets" [value]="target">{{ target }}</option>
+      </select>
+    </div>
+    <div>
+      <label for="diseaseActivityScore">Disease activity score</label>
+      <input type="text" id="diseaseActivityScore" formControlName="diseaseActivityScore" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="esr">ESR</label>
+      <input type="text" id="esr" formControlName="esr" />
+    </div>
+    <div>
+      <label for="crp">CRP</label>
+      <input type="text" id="crp" formControlName="crp" />
+    </div>
+  </div>
+
+  <label for="rheumatologistImpression">Rheumatologist's impression</label>
+  <textarea id="rheumatologistImpression" formControlName="rheumatologistImpression"></textarea>
+</form>

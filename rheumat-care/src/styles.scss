@@ -1,0 +1,259 @@
+/* Global Styles for CODE Eye Care - Rheumatology Interface */
+
+:root {
+  --bg: #f6f7fb;
+  --card: #fff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #d6dbe6;
+  --accent: #2563eb;
+  --accent2: #1d4ed8;
+  --ok: #10b981;
+  --chip: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.wrap {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 14px;
+  margin-top: 14px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.right-panel {
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+
+  @media (max-width: 1024px) {
+    position: relative;
+    top: 0;
+  }
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+h2 {
+  margin: 0 0 10px 0;
+  font-size: 15px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 12px 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 8px 0 6px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+
+  &:focus {
+    border-color: var(--accent);
+  }
+}
+
+textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.mono {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+
+  &.onecol {
+    grid-template-columns: 1fr;
+  }
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--chip);
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+
+  input {
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 13px;
+  }
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+
+  &.ok {
+    border-color: var(--ok);
+    color: #065f46;
+    background: #ecfdf5;
+  }
+}
+
+.moduleTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.miniGrid3 {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 0.9fr;
+  gap: 10px;
+  margin-bottom: 8px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+button {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f9fafb;
+  }
+
+  &.primary {
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+    color: #fff;
+    border-color: var(--accent2);
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &.ghost {
+    background: transparent;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
+}
+
+@media print {
+  .wrap {
+    max-width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .left-panel {
+    display: none !important;
+  }
+
+  .right-panel {
+    position: relative;
+    top: 0;
+  }
+
+  button {
+    display: none !important;
+  }
+}

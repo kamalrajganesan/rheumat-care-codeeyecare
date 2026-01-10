@@ -1,0 +1,138 @@
+<div class="card module-card">
+  <div class="moduleTitle">
+    <h2>URIS – Uvea–Rheumat Interface Sheet</h2>
+    <span class="pill" [class.ok]="completed">{{ completed ? 'Complete' : 'Pending' }}</span>
+  </div>
+
+  <form [formGroup]="urisForm">
+    <label for="visit">Visit</label>
+    <select id="visit" formControlName="visit">
+      <option value="">Select…</option>
+      <option *ngFor="let type of visitTypes" [value]="type">{{ type }}</option>
+    </select>
+
+    <label for="uveitisStatus">Uveitis status</label>
+    <select id="uveitisStatus" formControlName="uveitisStatus">
+      <option value="">Select…</option>
+      <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
+    </select>
+
+    <div class="divider"></div>
+
+    <label for="anatomicalType">Uveitis anatomical type</label>
+    <select id="anatomicalType" formControlName="anatomicalType">
+      <option value="">Select…</option>
+      <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
+    </select>
+
+    <label for="nature">Uveitis nature</label>
+    <select id="nature" formControlName="nature">
+      <option value="">Select…</option>
+      <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+    </select>
+
+    <div class="divider"></div>
+
+    <label>Likely / confirmed diagnosis (tick that applies)</label>
+    <div class="checks">
+      <label *ngFor="let diagnosis of diagnoses" class="check">
+        <input
+          type="checkbox"
+          [checked]="isDiagnosisChecked(diagnosis)"
+          (change)="onDiagnosisChange(diagnosis, $event)"
+        />
+        <span>{{ diagnosis }}</span>
+      </label>
+    </div>
+
+    <label for="finalDiagnosis">Final uveitis diagnosis (if known)</label>
+    <input
+      type="text"
+      id="finalDiagnosis"
+      formControlName="finalDiagnosis"
+      placeholder="(optional)"
+    />
+
+    <div class="divider"></div>
+
+    <label for="episodePattern">Episode pattern</label>
+    <select id="episodePattern" formControlName="episodePattern">
+      <option value="">Select…</option>
+      <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
+    </select>
+
+    <label for="episodesCount">Number of episodes (last 1–2 years)</label>
+    <select id="episodesCount" formControlName="episodesCount">
+      <option value="">Select…</option>
+      <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
+    </select>
+
+    <label for="priorCourseCompleted">Was prior treatment course completed?</label>
+    <select id="priorCourseCompleted" formControlName="priorCourseCompleted">
+      <option value="">Select…</option>
+      <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
+    </select>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title">Topical treatment</h2>
+
+    <label>Topical steroids</label>
+    <div class="row">
+      <select formControlName="topicalSteroidsUse">
+        <option value="">Select…</option>
+        <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+      </select>
+      <select formControlName="topicalSteroidsLaterality">
+        <option value="">Laterality…</option>
+        <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
+      </select>
+    </div>
+    <div *ngIf="showSteroidsDetails()">
+      <label for="steroidsName">Name</label>
+      <input type="text" id="steroidsName" formControlName="topicalSteroidsName" />
+    </div>
+
+    <label>Topical NSAID</label>
+    <div class="row">
+      <select formControlName="topicalNSAIDUse">
+        <option value="">Select…</option>
+        <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+      </select>
+      <select formControlName="topicalNSAIDLaterality">
+        <option value="">Laterality…</option>
+        <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
+      </select>
+    </div>
+    <div *ngIf="showNSAIDDetails()">
+      <label for="nsaidName">Name</label>
+      <input type="text" id="nsaidName" formControlName="topicalNSAIDName" />
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 class="section-title">Coordination / action items</h2>
+    <div class="checks onecol">
+      <label *ngFor="let item of actionItems" class="check">
+        <input
+          type="checkbox"
+          [checked]="isActionItemChecked(item)"
+          (change)="onActionItemChange(item, $event)"
+        />
+        <span>{{ item }}</span>
+      </label>
+    </div>
+
+    <label for="surgeryClearance">Need rheumatology clearance for surgery?</label>
+    <select id="surgeryClearance" formControlName="surgeryClearance">
+      <option value="">Select…</option>
+      <option *ngFor="let option of surgeryClearanceOptions" [value]="option">{{ option }}</option>
+    </select>
+
+    <label for="ophInput">Ophthalmologist input</label>
+    <textarea id="ophInput" formControlName="ophthalmologistInput"></textarea>
+
+    <div class="divider"></div>
+    <button class="primary" type="button" (click)="markComplete()">Mark URIS complete</button>
+  </form>
+</div>
