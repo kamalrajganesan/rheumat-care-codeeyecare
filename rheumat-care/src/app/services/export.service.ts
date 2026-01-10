@@ -18,10 +18,10 @@ export class ExportService {
 
     let html = `
       <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <img src="assets/images/CODE EYE CARE LOGO-02.png" style="height:42px;width:auto;object-fit:contain;" onerror="this.style.display='none'" />
+        <div style="">
+          <img src="assets/images/code-eye-care-logo.png" style="height:42px;width:auto;object-fit:contain;" onerror="this.style.display='none'" /><br>
           <div>
-            <div style="font-size:16px;font-weight:800;margin-bottom:2px;">CODE Eye Care – Rheumatology Interface Summary</div>
+            <div style="font-size:16px;font-weight:800;margin-bottom:2px;">Rheumatology Interface Summary</div>
           </div>
         </div>
         <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
