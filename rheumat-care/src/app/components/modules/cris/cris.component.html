@@ -24,6 +24,18 @@
     </div>
 
     <div class="miniGrid3">
+      <div><label>OSDI-6 Score</label></div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="osdi6OD" min="0" step="1" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <input type="number" formControlName="osdi6OS" min="0" step="1" />
+      </div>
+    </div>
+
+    <div class="miniGrid3">
       <div><label>Schirmer's 1 wetting @ 5 mins (mm)</label></div>
       <div>
         <label>&nbsp;</label>
@@ -36,7 +48,7 @@
     </div>
 
     <div class="miniGrid3">
-      <div><label>Corneal staining: Mild/Mod/Severe</label></div>
+      <div><label>Corneal staining</label></div>
       <div>
         <label>&nbsp;</label>
         <select formControlName="cornealStainingOD">
@@ -53,14 +65,32 @@
       </div>
     </div>
 
-    <label for="cyclosporine">On topical cyclosporine</label>
-    <select id="cyclosporine" formControlName="topicalCyclosporine">
+    <div class="miniGrid3">
+      <div><label>Conjunctival staining</label></div>
+      <div>
+        <label>&nbsp;</label>
+        <select formControlName="conjunctivalStainingOD">
+          <option value="">Select…</option>
+          <option *ngFor="let level of conjunctivalStainingLevels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <select formControlName="conjunctivalStainingOS">
+          <option value="">Select…</option>
+          <option *ngFor="let level of conjunctivalStainingLevels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="antiInflammatory">On topical anti-inflammatory</label>
+    <select id="antiInflammatory" formControlName="topicalAntiInflammatory">
       <option value="">Select…</option>
-      <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+      <option *ngFor="let option of topicalAntiInflammatoryOptions" [value]="option">{{ option }}</option>
     </select>
-    <div *ngIf="showCyclosporineName()">
-      <label for="cyclosporineName">Name</label>
-      <input type="text" id="cyclosporineName" formControlName="cyclosporineName" />
+    <div *ngIf="showAntiInflammatoryName()">
+      <label for="antiInflammatoryName">Name</label>
+      <input type="text" id="antiInflammatoryName" formControlName="antiInflammatoryName" />
     </div>
 
     <label for="steroids">On topical steroids</label>

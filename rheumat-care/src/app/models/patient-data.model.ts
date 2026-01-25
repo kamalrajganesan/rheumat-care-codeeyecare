@@ -30,12 +30,16 @@ export interface Medication {
 export interface CRISModule {
   deq5OD: number | null;
   deq5OS: number | null;
+  osdi6OD: number | null;
+  osdi6OS: number | null;
   schirmerOD: number | null;
   schirmerOS: number | null;
   cornealStainingOD: string;
   cornealStainingOS: string;
-  topicalCyclosporine: string;
-  cyclosporineName?: string;
+  conjunctivalStainingOD: string;
+  conjunctivalStainingOS: string;
+  topicalAntiInflammatory: string;
+  antiInflammatoryName?: string;
   topicalSteroids: string;
   topicalSteroidsName?: string;
   followUpOD: string;
@@ -55,6 +59,7 @@ export interface EmergencyCondition {
 }
 
 export interface URISModule {
+  laterality: string;
   visit: string;
   uveitisStatus: string;
   anatomicalType: string;
@@ -76,9 +81,16 @@ export interface URISModule {
   completed: boolean;
 }
 
+export interface HCQDosingBlock {
+  dose: number | null;
+  duration: number | null;
+}
+
 export interface HCQModule {
   screeningType: string;
   testsPerformed: string[];
+  dosingBlocks: HCQDosingBlock[];
+  cumulativeDose: string;
   toxicitySigns: string;
   notes: string;
   completed: boolean;

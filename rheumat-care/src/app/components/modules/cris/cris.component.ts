@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { DataService } from '../../../services/data.service';
 import {
   CORNEAL_STAINING_LEVELS,
+  CONJUNCTIVAL_STAINING_LEVELS,
+  TOPICAL_ANTI_INFLAMMATORY_OPTIONS,
   FOLLOW_UP_STATUS,
   ELECTIVE_SURGERY_CLEARANCE,
   EMERGENCY_CONDITIONS,
@@ -21,6 +23,8 @@ import { debounceTime } from 'rxjs/operators';
 export class CrisComponent implements OnInit {
   crisForm!: FormGroup;
   cornealStainingLevels = CORNEAL_STAINING_LEVELS;
+  conjunctivalStainingLevels = CONJUNCTIVAL_STAINING_LEVELS;
+  topicalAntiInflammatoryOptions = TOPICAL_ANTI_INFLAMMATORY_OPTIONS;
   followUpStatuses = FOLLOW_UP_STATUS;
   electiveSurgeryClearances = ELECTIVE_SURGERY_CLEARANCE;
   emergencyConditions = EMERGENCY_CONDITIONS;
@@ -42,12 +46,16 @@ export class CrisComponent implements OnInit {
     this.crisForm = this.fb.group({
       deq5OD: [null],
       deq5OS: [null],
+      osdi6OD: [null],
+      osdi6OS: [null],
       schirmerOD: [null],
       schirmerOS: [null],
       cornealStainingOD: [''],
       cornealStainingOS: [''],
-      topicalCyclosporine: [''],
-      cyclosporineName: [''],
+      conjunctivalStainingOD: [''],
+      conjunctivalStainingOS: [''],
+      topicalAntiInflammatory: [''],
+      antiInflammatoryName: [''],
       topicalSteroids: [''],
       topicalSteroidsName: [''],
       followUpOD: [''],
@@ -108,8 +116,9 @@ export class CrisComponent implements OnInit {
     return currentItems.includes(item);
   }
 
-  showCyclosporineName(): boolean {
-    return this.crisForm.get('topicalCyclosporine')?.value === 'Yes';
+  showAntiInflammatoryName(): boolean {
+    const value = this.crisForm.get('topicalAntiInflammatory')?.value;
+    return value === 'Others';
   }
 
   showSteroidsName(): boolean {

@@ -1,59 +1,115 @@
 # RheumatCare
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+A clinical web application for managing rheumatology-ophthalmology interface documentation. Built with Angular 21.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+RheumatCare streamlines the documentation workflow between rheumatologists and ophthalmologists, providing structured forms for patient visits, disease tracking, and specialized module assessments.
+
+## Features
+
+### Patient Visit Management
+- Patient identification (Name, CEC Number)
+- Rheumatologist assignment
+- Visit type tracking (First visit, Follow-up, Reports review, Urgent/flare, Others)
+
+### Rheumatologist Sheet
+- Systemic diagnosis tracking
+- Serology status (Seropositive, Seronegative, Not applicable, Unknown)
+- Disease status monitoring (Active, Remission, Exacerbation, Burnt out)
+- Treatment targets and disease activity scores
+- Lab values (ESR, CRP)
+
+### Medications Tracking
+- Steroid dosing
+- Methotrexate management
+- Hydroxychloroquine (HCQ) with cumulative dose calculation
+- Biologicals and JAK inhibitors
+
+## Specialized Modules
+
+### CRIS (Cornea-Rheumat Interface Sheet)
+Comprehensive dry eye and corneal disease assessment:
+
+| Field | Description |
+|-------|-------------|
+| DEQ5 Score | Dry Eye Questionnaire (0-25) for OD/OS |
+| OSDI-6 Score | Ocular Surface Disease Index for OD/OS |
+| Schirmer's Test | Wetting measurement at 5 minutes (mm) |
+| Corneal Staining | Severity: Nil, Mild, Moderate, Severe |
+| Conjunctival Staining | Severity: Nil, Mild, Moderate, Severe |
+| Topical Anti-inflammatory | Options: No, Cyclosporine, Lifitegrast, Others |
+| Topical Steroids | Yes/No with name/dose specification |
+| Follow-up Status | Baseline, Improved, Worsened, Status quo |
+| Elective Surgery Clearance | Not applicable, Yes, No |
+| Emergency Conditions | Necrotising/Non-necrotising scleritis, PUK, Corneal perforation/infection, Emergency surgery |
+| Coordination Items | IVMP, Pulse Cyclophosphamide, Biologicals, Immunomodulation adjustments |
+
+### URIS (Uvea-Rheumat Interface Sheet)
+Uveitis assessment and management:
+- Laterality (OD/OS/OU)
+- Uveitis status and anatomical type
+- Episode pattern and recurrence tracking
+- Topical treatment documentation
+- Action items and surgery clearance
+
+### HCQ Screening
+Hydroxychloroquine toxicity monitoring:
+- Baseline and annual screening
+- Up to 3 HCQ dosing blocks (dose + duration) for patients with varying dose history
+- Automatic cumulative dose calculation across all dosing blocks
+- Macula OCT, Fundus photo, HVF, MF-ERG tracking
+- Toxicity assessment
+
+## Export Features
+- Print-friendly HTML summary generation
+- CSV export for data analysis
+
+## Development
+
+### Prerequisites
+- Node.js 18+
+- Angular CLI 21.x
+
+### Development Server
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/`. The application auto-reloads on file changes.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts are stored in `dist/rheumat-care`.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Running Tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Project Structure
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```
+src/app/
+├── components/
+│   └── modules/
+│       ├── cris/          # CRIS module component
+│       ├── uris/          # URIS module component
+│       └── hcq/           # HCQ screening component
+├── models/
+│   ├── patient-data.model.ts   # Data interfaces
+│   └── constants.ts            # Dropdown options & constants
+└── services/
+    ├── data.service.ts         # State management
+    └── export.service.ts       # Print/CSV export
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## License
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Proprietary - CODE Eye Care

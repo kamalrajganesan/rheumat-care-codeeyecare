@@ -104,11 +104,15 @@ export class DataService {
         cris: {
           deq5OD: null,
           deq5OS: null,
+          osdi6OD: null,
+          osdi6OS: null,
           schirmerOD: null,
           schirmerOS: null,
           cornealStainingOD: '',
           cornealStainingOS: '',
-          topicalCyclosporine: '',
+          conjunctivalStainingOD: '',
+          conjunctivalStainingOS: '',
+          topicalAntiInflammatory: '',
           topicalSteroids: '',
           followUpOD: '',
           followUpOS: '',
@@ -129,6 +133,7 @@ export class DataService {
       this.dataSubject.next({
         ...current,
         uris: {
+          laterality: '',
           visit: '',
           uveitisStatus: '',
           anatomicalType: '',
@@ -161,6 +166,12 @@ export class DataService {
         hcq: {
           screeningType: '',
           testsPerformed: [],
+          dosingBlocks: [
+            { dose: null, duration: null },
+            { dose: null, duration: null },
+            { dose: null, duration: null }
+          ],
+          cumulativeDose: '',
           toxicitySigns: '',
           notes: '',
           completed: false

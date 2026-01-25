@@ -13,6 +13,29 @@
 
     <div class="divider"></div>
 
+    <h2 class="section-title">HCQ Dosing History</h2>
+
+    <div formArrayName="dosingBlocks">
+      <div *ngFor="let block of dosingBlocks.controls; let i = index" [formGroupName]="i" class="dosing-block">
+        <label>Block {{ i + 1 }}</label>
+        <div class="row">
+          <div class="field">
+            <input type="number" formControlName="dose" placeholder="Dose (mg/day)" min="0" />
+          </div>
+          <div class="field">
+            <input type="number" formControlName="duration" placeholder="Duration (months)" min="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cumulative-dose">
+      <label>Cumulative HCQ dose</label>
+      <div class="calculated-value">{{ cumulativeDose || '—' }}</div>
+    </div>
+
+    <div class="divider"></div>
+
     <label>Tests performed (tick all)</label>
     <div class="checks">
       <label *ngFor="let test of tests" class="check">

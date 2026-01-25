@@ -59,7 +59,11 @@ export const MODULES = [
 ];
 
 // CRIS Module Constants
-export const CORNEAL_STAINING_LEVELS = ['Mild', 'Moderate', 'Severe'];
+export const CORNEAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
+
+export const CONJUNCTIVAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
+
+export const TOPICAL_ANTI_INFLAMMATORY_OPTIONS = ['No', 'Cyclosporine', 'Lifitegrast', 'Others'];
 
 export const FOLLOW_UP_STATUS = [
   'Baseline',

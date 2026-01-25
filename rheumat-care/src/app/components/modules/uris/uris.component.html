@@ -5,6 +5,12 @@
   </div>
 
   <form [formGroup]="urisForm">
+    <label for="laterality">Laterality</label>
+    <select id="laterality" formControlName="laterality">
+      <option value="">Select…</option>
+      <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
+    </select>
+
     <label for="visit">Visit</label>
     <select id="visit" formControlName="visit">
       <option value="">Select…</option>

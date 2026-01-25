@@ -85,9 +85,11 @@ export class ExportService {
           <div style="font-weight:800;margin-bottom:6px;">CRIS – Cornea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.cris.completed ? 'Complete' : 'Pending'}</div>
           <div><b>DEQ5:</b> OD ${data.cris.deq5OD ?? '—'} | OS ${data.cris.deq5OS ?? '—'}</div>
+          <div><b>OSDI-6 Score:</b> OD ${data.cris.osdi6OD ?? '—'} | OS ${data.cris.osdi6OS ?? '—'}</div>
           <div><b>Schirmer's 1 @5 min:</b> OD ${data.cris.schirmerOD ?? '—'} mm | OS ${data.cris.schirmerOS ?? '—'} mm</div>
           <div><b>Corneal staining:</b> OD ${escapeHtml(data.cris.cornealStainingOD || '—')} | OS ${escapeHtml(data.cris.cornealStainingOS || '—')}</div>
-          <div><b>Topical cyclosporine:</b> ${escapeHtml(data.cris.topicalCyclosporine || '—')}${data.cris.topicalCyclosporine === 'Yes' && data.cris.cyclosporineName ? ' – ' + escapeHtml(data.cris.cyclosporineName) : ''}</div>
+          <div><b>Conjunctival staining:</b> OD ${escapeHtml(data.cris.conjunctivalStainingOD || '—')} | OS ${escapeHtml(data.cris.conjunctivalStainingOS || '—')}</div>
+          <div><b>Topical anti-inflammatory:</b> ${escapeHtml(data.cris.topicalAntiInflammatory || '—')}${data.cris.topicalAntiInflammatory === 'Others' && data.cris.antiInflammatoryName ? ' – ' + escapeHtml(data.cris.antiInflammatoryName) : ''}</div>
           <div><b>Topical steroids:</b> ${escapeHtml(data.cris.topicalSteroids || '—')}${data.cris.topicalSteroids === 'Yes' && data.cris.topicalSteroidsName ? ' – ' + escapeHtml(data.cris.topicalSteroidsName) : ''}</div>
           <div><b>Follow-up clinical status:</b> OD ${escapeHtml(data.cris.followUpOD || '—')} | OS ${escapeHtml(data.cris.followUpOS || '—')}</div>
           <div><b>Clearance for elective surgery:</b> ${escapeHtml(data.cris.electiveSurgeryClearance || '—')}</div>
@@ -105,6 +107,7 @@ export class ExportService {
         <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">URIS – Uvea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.uris.completed ? 'Complete' : 'Pending'}</div>
+          <div><b>Laterality:</b> ${escapeHtml(data.uris.laterality || '—')}</div>
           <div><b>Visit:</b> ${escapeHtml(data.uris.visit || '—')}</div>
           <div><b>Uveitis status:</b> ${escapeHtml(data.uris.uveitisStatus || '—')}</div>
           <div><b>Anatomical type:</b> ${escapeHtml(data.uris.anatomicalType || '—')}</div>
@@ -125,11 +128,23 @@ export class ExportService {
 
     // HCQ Module
     if (data.selectedModules.includes('HCQ Screening') && data.hcq) {
+      const dosingBlocksHtml = data.hcq.dosingBlocks
+        .map((block, i) => {
+          if (block.dose && block.duration) {
+            return `Block ${i + 1}: ${block.dose} mg/day × ${block.duration} months`;
+          }
+          return null;
+        })
+        .filter(b => b !== null)
+        .join(' | ') || '—';
+
       html += `
         <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
           <div><b>Status:</b> ${data.hcq.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '—')}</div>
+          <div><b>Dosing history:</b> ${dosingBlocksHtml}</div>
+          <div><b>Cumulative HCQ dose:</b> ${escapeHtml(data.hcq.cumulativeDose || '—')}</div>
           <div><b>Tests:</b> ${data.hcq.testsPerformed.length ? data.hcq.testsPerformed.join(', ') : '—'}</div>
           <div><b>Signs of toxicity:</b> ${escapeHtml(data.hcq.toxicitySigns || '—')}</div>
           ${data.hcq.notes ? `<div><b>Notes:</b> ${escapeHtml(data.hcq.notes)}</div>` : ''}

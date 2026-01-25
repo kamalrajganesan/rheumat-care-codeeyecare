@@ -48,6 +48,7 @@ export class UrisComponent implements OnInit {
     this.dataService.initializeURISModule();
 
     this.urisForm = this.fb.group({
+      laterality: [''],
       visit: [''],
       uveitisStatus: [''],
       anatomicalType: [''],

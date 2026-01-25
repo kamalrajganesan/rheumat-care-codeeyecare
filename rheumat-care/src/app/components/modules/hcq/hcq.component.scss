@@ -1,3 +1,47 @@
 .module-card {
   margin-top: 14px;
 }
+
+.section-title {
+  font-size: 14px;
+  margin: 0 0 6px 0;
+}
+
+.dosing-block {
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+
+  label {
+    margin: 0 0 6px 0;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .field {
+    flex: 1;
+  }
+}
+
+.cumulative-dose {
+  margin-top: 12px;
+  padding: 12px;
+  background: #ecfdf5;
+  border-radius: 10px;
+  border: 1px solid #10b981;
+
+  label {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    color: #065f46;
+  }
+
+  .calculated-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #065f46;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+}
