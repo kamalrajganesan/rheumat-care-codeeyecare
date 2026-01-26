@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { SYSTEMIC_DIAGNOSES, SEROLOGY_STATUS, DISEASE_STATUS, TREATMENT_TARGETS } from '../../models/constants';
 import { debounceTime } from 'rxjs/operators';
@@ -10,12 +11,13 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./rheumatologist-sheet.component.scss'],
   standalone: false
 })
-export class RheumatologistSheetComponent implements OnInit {
+export class RheumatologistSheetComponent implements OnInit, OnDestroy {
   rheumatologistForm!: FormGroup;
   systemicDiagnoses = SYSTEMIC_DIAGNOSES;
   serologyStatuses = SEROLOGY_STATUS;
   diseaseStatuses = DISEASE_STATUS;
   treatmentTargets = TREATMENT_TARGETS;
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +27,7 @@ export class RheumatologistSheetComponent implements OnInit {
   ngOnInit(): void {
     this.rheumatologistForm = this.fb.group({
       systemicDiagnosis: [[]],
+      otherDiagnosis: [''],
       finalSystemicDiagnosis: [''],
       serologyStatus: [''],
       diseaseStatus: [''],
@@ -40,6 +43,16 @@ export class RheumatologistSheetComponent implements OnInit {
       .subscribe(values => {
         this.dataService.updateRheumatologistSheet(values);
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.rheumatologistForm.reset({ systemicDiagnosis: [] });
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 
   onDiagnosisChange(diagnosis: string, event: any): void {
@@ -58,5 +71,9 @@ export class RheumatologistSheetComponent implements OnInit {
   isDiagnosisChecked(diagnosis: string): boolean {
     const currentDiagnoses = this.rheumatologistForm.get('systemicDiagnosis')?.value || [];
     return currentDiagnoses.includes(diagnosis);
+  }
+
+  showOtherDiagnosis(): boolean {
+    return this.isDiagnosisChecked('Others');
   }
 }

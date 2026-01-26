@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { RheumatCareData, PatientVisit, RheumatologistSheet, Medication, CRISModule, URISModule, HCQModule } from '../models/patient-data.model';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class DataService {
     },
     rheumatologistSheet: {
       systemicDiagnosis: [],
+      otherDiagnosis: '',
       finalSystemicDiagnosis: '',
       serologyStatus: '',
       diseaseStatus: '',
@@ -33,6 +34,9 @@ export class DataService {
 
   private dataSubject = new BehaviorSubject<RheumatCareData>(this.initialData);
   public data$: Observable<RheumatCareData> = this.dataSubject.asObservable();
+
+  private resetSubject = new Subject<void>();
+  public reset$: Observable<void> = this.resetSubject.asObservable();
 
   constructor() { }
 
@@ -133,22 +137,29 @@ export class DataService {
       this.dataSubject.next({
         ...current,
         uris: {
-          laterality: '',
           visit: '',
-          uveitisStatus: '',
-          anatomicalType: '',
-          nature: '',
+          uveitisStatusOD: '',
+          uveitisStatusOS: '',
+          anatomicalTypeOD: '',
+          anatomicalTypeOS: '',
+          natureOD: '',
+          natureOS: '',
+          episodePatternOD: '',
+          episodePatternOS: '',
+          episodesCountOD: '',
+          episodesCountOS: '',
+          priorCourseCompletedOD: '',
+          priorCourseCompletedOS: '',
           diagnosis: [],
           finalDiagnosis: '',
-          episodePattern: '',
-          episodesCount: '',
-          priorCourseCompleted: '',
-          topicalSteroidsUse: '',
-          topicalSteroidsLaterality: '',
-          topicalSteroidsName: '',
-          topicalNSAIDUse: '',
-          topicalNSAIDLaterality: '',
-          topicalNSAIDName: '',
+          topicalSteroidsOD: '',
+          topicalSteroidsOS: '',
+          topicalSteroidsNameOD: '',
+          topicalSteroidsNameOS: '',
+          topicalNSAIDOD: '',
+          topicalNSAIDOS: '',
+          topicalNSAIDNameOD: '',
+          topicalNSAIDNameOS: '',
           actionItems: [],
           surgeryClearance: '',
           ophthalmologistInput: '',
@@ -190,11 +201,38 @@ export class DataService {
 
   resetData(): void {
     this.dataSubject.next({
-      ...this.initialData,
-      patientVisit: { ...this.initialData.patientVisit },
-      rheumatologistSheet: { ...this.initialData.rheumatologistSheet },
-      medications: { ...this.initialData.medications }
+      patientVisit: {
+        patientName: '',
+        cecNumber: '',
+        rheumatologistName: '',
+        visitType: ''
+      },
+      rheumatologistSheet: {
+        systemicDiagnosis: [],
+        otherDiagnosis: '',
+        finalSystemicDiagnosis: '',
+        serologyStatus: '',
+        diseaseStatus: '',
+        treatmentTarget: '',
+        diseaseActivityScore: '',
+        esr: '',
+        crp: '',
+        rheumatologistImpression: ''
+      },
+      medications: {
+        selectedMeds: [],
+        steroidDose: '',
+        methotrexateDose: undefined,
+        otherMedName: '',
+        otherMedDetails: ''
+      },
+      selectedModules: [],
+      timestamp: '',
+      cris: undefined,
+      uris: undefined,
+      hcq: undefined
     });
+    this.resetSubject.next();
   }
 
   updateTimestamp(): void {

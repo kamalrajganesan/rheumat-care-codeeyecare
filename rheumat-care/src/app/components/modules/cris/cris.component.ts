@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 import {
   CORNEAL_STAINING_LEVELS,
@@ -20,7 +21,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./cris.component.scss'],
   standalone: false
 })
-export class CrisComponent implements OnInit {
+export class CrisComponent implements OnInit, OnDestroy {
   crisForm!: FormGroup;
   cornealStainingLevels = CORNEAL_STAINING_LEVELS;
   conjunctivalStainingLevels = CONJUNCTIVAL_STAINING_LEVELS;
@@ -33,6 +34,7 @@ export class CrisComponent implements OnInit {
   completed: boolean = false;
 
   emergencyConditionsList: EmergencyCondition[] = [];
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -75,6 +77,18 @@ export class CrisComponent implements OnInit {
           completed: this.completed
         });
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.crisForm.reset({ coordinationItems: [] });
+      this.initializeEmergencyConditions();
+      this.completed = false;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 
   initializeEmergencyConditions(): void {
@@ -118,7 +132,7 @@ export class CrisComponent implements OnInit {
 
   showAntiInflammatoryName(): boolean {
     const value = this.crisForm.get('topicalAntiInflammatory')?.value;
-    return value === 'Others';
+    return value && value !== 'No';
   }
 
   showSteroidsName(): boolean {

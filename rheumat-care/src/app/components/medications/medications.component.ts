@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { MEDICATIONS, HCQ_DAILY_DOSES } from '../../models/constants';
 import { debounceTime } from 'rxjs/operators';
@@ -10,11 +11,12 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./medications.component.scss'],
   standalone: false
 })
-export class MedicationsComponent implements OnInit {
+export class MedicationsComponent implements OnInit, OnDestroy {
   medicationsForm!: FormGroup;
   medications = MEDICATIONS;
   hcqDailyDoses = HCQ_DAILY_DOSES;
   hcqCumulativeDose: string = '—';
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +30,7 @@ export class MedicationsComponent implements OnInit {
       methotrexateDose: [null],
       hcqDailyDose: [null],
       hcqTotalMonths: [null],
+      otherMedName: [''],
       otherMedDetails: ['']
     });
 
@@ -41,6 +44,17 @@ export class MedicationsComponent implements OnInit {
         };
         this.dataService.updateMedications(updateData);
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.medicationsForm.reset({ selectedMeds: [] });
+      this.hcqCumulativeDose = '—';
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 
   onMedicationChange(medication: string, event: any): void {
@@ -49,6 +63,13 @@ export class MedicationsComponent implements OnInit {
       this.medicationsForm.patchValue({
         selectedMeds: [...currentMeds, medication]
       });
+      // Auto-select HCQ module when HCQ medication is checked
+      if (medication === 'Hydroxychloroquine (HCQ)') {
+        const currentData = this.dataService.getData();
+        if (!currentData.selectedModules.includes('HCQ Screening')) {
+          this.dataService.updateSelectedModules([...currentData.selectedModules, 'HCQ Screening']);
+        }
+      }
     } else {
       this.medicationsForm.patchValue({
         selectedMeds: currentMeds.filter((m: string) => m !== medication)
@@ -76,6 +97,10 @@ export class MedicationsComponent implements OnInit {
 
   showHCQDose(): boolean {
     return this.isMedicationChecked('Hydroxychloroquine (HCQ)');
+  }
+
+  showOtherMedication(): boolean {
+    return this.isMedicationChecked('Others');
   }
 
   calculateHCQCumulative(): void {

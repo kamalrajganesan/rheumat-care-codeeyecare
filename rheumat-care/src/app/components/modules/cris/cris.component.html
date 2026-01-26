@@ -12,7 +12,7 @@
     </div>
 
     <div class="miniGrid3">
-      <div><label>DEQ5 score</label></div>
+      <div><label>DEQ5 Score</label></div>
       <div>
         <label>&nbsp;</label>
         <input type="number" formControlName="deq5OD" min="0" max="25" step="1" />
@@ -48,7 +48,7 @@
     </div>
 
     <div class="miniGrid3">
-      <div><label>Corneal staining</label></div>
+      <div><label>Corneal Staining</label></div>
       <div>
         <label>&nbsp;</label>
         <select formControlName="cornealStainingOD">
@@ -66,7 +66,7 @@
     </div>
 
     <div class="miniGrid3">
-      <div><label>Conjunctival staining</label></div>
+      <div><label>Conjunctival Staining</label></div>
       <div>
         <label>&nbsp;</label>
         <select formControlName="conjunctivalStainingOD">
@@ -83,29 +83,29 @@
       </div>
     </div>
 
-    <label for="antiInflammatory">On topical anti-inflammatory</label>
+    <label for="antiInflammatory">On Topical Anti-Inflammatory</label>
     <select id="antiInflammatory" formControlName="topicalAntiInflammatory">
       <option value="">Select…</option>
       <option *ngFor="let option of topicalAntiInflammatoryOptions" [value]="option">{{ option }}</option>
     </select>
     <div *ngIf="showAntiInflammatoryName()">
-      <label for="antiInflammatoryName">Name</label>
-      <input type="text" id="antiInflammatoryName" formControlName="antiInflammatoryName" />
+      <label for="antiInflammatoryName">Name / Dose</label>
+      <input type="text" id="antiInflammatoryName" formControlName="antiInflammatoryName" placeholder="e.g., Restasis 0.05% BD" />
     </div>
 
-    <label for="steroids">On topical steroids</label>
+    <label for="steroids">On Topical Steroids</label>
     <select id="steroids" formControlName="topicalSteroids">
       <option value="">Select…</option>
       <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
     </select>
     <div *ngIf="showSteroidsName()">
-      <label for="steroidsName">Name / dose</label>
+      <label for="steroidsName">Name / Dose</label>
       <input type="text" id="steroidsName" formControlName="topicalSteroidsName" />
     </div>
 
     <div class="divider"></div>
 
-    <label>Follow up clinical status</label>
+    <label>Follow Up Clinical Status</label>
     <div class="miniGrid3">
       <div></div>
       <div>
@@ -122,7 +122,7 @@
       </div>
     </div>
 
-    <label for="electiveSurgery">Clearance for elective surgery</label>
+    <label for="electiveSurgery">Clearance For Elective Surgery</label>
     <select id="electiveSurgery" formControlName="electiveSurgeryClearance">
       <option value="">Select…</option>
       <option *ngFor="let clearance of electiveSurgeryClearances" [value]="clearance">{{ clearance }}</option>
@@ -169,10 +169,10 @@
 
     <div class="divider"></div>
 
-    <label for="impression">Ophthalmologist's impression</label>
+    <label for="impression">Ophthalmologist's Impression</label>
     <textarea id="impression" formControlName="ophthalmologistImpression"></textarea>
 
-    <label for="notes">Additional notes</label>
+    <label for="notes">Additional Notes</label>
     <textarea id="notes" formControlName="additionalNotes"></textarea>
 
     <div class="divider"></div>

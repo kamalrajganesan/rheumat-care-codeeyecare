@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from './services/data.service';
 
 @Component({
@@ -7,15 +8,22 @@ import { DataService } from './services/data.service';
   standalone: false,
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
   selectedModules: string[] = [];
+  private dataSubscription!: Subscription;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.data$.subscribe(data => {
+    this.dataSubscription = this.dataService.data$.subscribe(data => {
       this.selectedModules = data.selectedModules;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   showCRIS(): boolean {

@@ -3,22 +3,22 @@
   <form [formGroup]="patientForm">
     <div class="row">
       <div>
-        <label for="patientName">Patient name</label>
+        <label for="patientName">Patient Name</label>
         <input type="text" id="patientName" formControlName="patientName" />
       </div>
       <div>
-        <label for="cecNumber">CEC number</label>
+        <label for="cecNumber">CEC Number</label>
         <input type="text" id="cecNumber" formControlName="cecNumber" />
       </div>
     </div>
 
     <div class="row">
       <div>
-        <label for="rheumatologistName">Rheumatologist name</label>
+        <label for="rheumatologistName">Rheumatologist Name</label>
         <input type="text" id="rheumatologistName" formControlName="rheumatologistName" />
       </div>
       <div>
-        <label for="visitType">Visit type</label>
+        <label for="visitType">Visit Type</label>
         <select id="visitType" formControlName="visitType">
           <option value="">Select…</option>
           <option *ngFor="let type of visitTypes" [value]="type">{{ type }}</option>

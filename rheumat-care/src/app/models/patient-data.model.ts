@@ -7,6 +7,7 @@ export interface PatientVisit {
 
 export interface RheumatologistSheet {
   systemicDiagnosis: string[];
+  otherDiagnosis?: string;
   finalSystemicDiagnosis: string;
   serologyStatus: string;
   diseaseStatus: string;
@@ -24,6 +25,7 @@ export interface Medication {
   hcqDailyDose?: number;
   hcqTotalMonths?: number;
   hcqCumulativeDose?: string;
+  otherMedName?: string;
   otherMedDetails?: string;
 }
 
@@ -59,22 +61,29 @@ export interface EmergencyCondition {
 }
 
 export interface URISModule {
-  laterality: string;
   visit: string;
-  uveitisStatus: string;
-  anatomicalType: string;
-  nature: string;
+  uveitisStatusOD: string;
+  uveitisStatusOS: string;
+  anatomicalTypeOD: string;
+  anatomicalTypeOS: string;
+  natureOD: string;
+  natureOS: string;
+  episodePatternOD: string;
+  episodePatternOS: string;
+  episodesCountOD: string;
+  episodesCountOS: string;
+  priorCourseCompletedOD: string;
+  priorCourseCompletedOS: string;
   diagnosis: string[];
   finalDiagnosis: string;
-  episodePattern: string;
-  episodesCount: string;
-  priorCourseCompleted: string;
-  topicalSteroidsUse: string;
-  topicalSteroidsLaterality: string;
-  topicalSteroidsName: string;
-  topicalNSAIDUse: string;
-  topicalNSAIDLaterality: string;
-  topicalNSAIDName: string;
+  topicalSteroidsOD: string;
+  topicalSteroidsOS: string;
+  topicalSteroidsNameOD: string;
+  topicalSteroidsNameOS: string;
+  topicalNSAIDOD: string;
+  topicalNSAIDOS: string;
+  topicalNSAIDNameOD: string;
+  topicalNSAIDNameOS: string;
   actionItems: string[];
   surgeryClearance: string;
   ophthalmologistInput: string;

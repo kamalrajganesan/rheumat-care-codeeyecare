@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { MODULES } from '../../models/constants';
 
@@ -8,16 +9,23 @@ import { MODULES } from '../../models/constants';
   styleUrls: ['./module-selector.component.scss'],
   standalone: false
 })
-export class ModuleSelectorComponent implements OnInit {
+export class ModuleSelectorComponent implements OnInit, OnDestroy {
   modules = MODULES;
   selectedModules: string[] = [];
+  private dataSubscription!: Subscription;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.data$.subscribe(data => {
+    this.dataSubscription = this.dataService.data$.subscribe(data => {
       this.selectedModules = data.selectedModules;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   onModuleChange(module: string, event: any): void {

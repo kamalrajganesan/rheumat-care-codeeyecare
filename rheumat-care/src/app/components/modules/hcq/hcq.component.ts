@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 import { HCQ_SCREENING_TYPES, HCQ_TESTS, HCQ_TOXICITY_OPTIONS } from '../../../models/constants';
 import { debounceTime } from 'rxjs/operators';
@@ -10,13 +11,14 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./hcq.component.scss'],
   standalone: false
 })
-export class HcqComponent implements OnInit {
+export class HcqComponent implements OnInit, OnDestroy {
   hcqForm!: FormGroup;
   screeningTypes = HCQ_SCREENING_TYPES;
   tests = HCQ_TESTS;
   toxicityOptions = HCQ_TOXICITY_OPTIONS;
   completed: boolean = false;
   cumulativeDose: string = '';
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +50,22 @@ export class HcqComponent implements OnInit {
           completed: this.completed
         });
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.hcqForm.reset({ testsPerformed: [] });
+      // Reset dosing blocks
+      this.dosingBlocks.controls.forEach(control => {
+        control.reset({ dose: null, duration: null });
+      });
+      this.completed = false;
+      this.cumulativeDose = '';
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 
   createDosingBlock(): FormGroup {

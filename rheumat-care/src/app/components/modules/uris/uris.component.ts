@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 import {
   URIS_VISIT_TYPES,
@@ -23,7 +24,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./uris.component.scss'],
   standalone: false
 })
-export class UrisComponent implements OnInit {
+export class UrisComponent implements OnInit, OnDestroy {
   urisForm!: FormGroup;
   visitTypes = URIS_VISIT_TYPES;
   uveitisStatuses = UVEITIS_STATUS;
@@ -38,6 +39,7 @@ export class UrisComponent implements OnInit {
   surgeryClearanceOptions = SURGERY_CLEARANCE_OPTIONS;
   yesNoOptions = YES_NO_OPTIONS;
   completed: boolean = false;
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -48,22 +50,29 @@ export class UrisComponent implements OnInit {
     this.dataService.initializeURISModule();
 
     this.urisForm = this.fb.group({
-      laterality: [''],
       visit: [''],
-      uveitisStatus: [''],
-      anatomicalType: [''],
-      nature: [''],
+      uveitisStatusOD: [''],
+      uveitisStatusOS: [''],
+      anatomicalTypeOD: [''],
+      anatomicalTypeOS: [''],
+      natureOD: [''],
+      natureOS: [''],
+      episodePatternOD: [''],
+      episodePatternOS: [''],
+      episodesCountOD: [''],
+      episodesCountOS: [''],
+      priorCourseCompletedOD: [''],
+      priorCourseCompletedOS: [''],
       diagnosis: [[]],
       finalDiagnosis: [''],
-      episodePattern: [''],
-      episodesCount: [''],
-      priorCourseCompleted: [''],
-      topicalSteroidsUse: [''],
-      topicalSteroidsLaterality: [''],
-      topicalSteroidsName: [''],
-      topicalNSAIDUse: [''],
-      topicalNSAIDLaterality: [''],
-      topicalNSAIDName: [''],
+      topicalSteroidsOD: [''],
+      topicalSteroidsOS: [''],
+      topicalSteroidsNameOD: [''],
+      topicalSteroidsNameOS: [''],
+      topicalNSAIDOD: [''],
+      topicalNSAIDOS: [''],
+      topicalNSAIDNameOD: [''],
+      topicalNSAIDNameOS: [''],
       actionItems: [[]],
       surgeryClearance: [''],
       ophthalmologistInput: ['']
@@ -77,6 +86,17 @@ export class UrisComponent implements OnInit {
           completed: this.completed
         });
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.urisForm.reset({ diagnosis: [], actionItems: [] });
+      this.completed = false;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 
   onDiagnosisChange(diagnosis: string, event: any): void {
@@ -115,12 +135,20 @@ export class UrisComponent implements OnInit {
     return currentItems.includes(item);
   }
 
-  showSteroidsDetails(): boolean {
-    return this.urisForm.get('topicalSteroidsUse')?.value === 'Yes';
+  showSteroidsNameOD(): boolean {
+    return this.urisForm.get('topicalSteroidsOD')?.value === 'Yes';
   }
 
-  showNSAIDDetails(): boolean {
-    return this.urisForm.get('topicalNSAIDUse')?.value === 'Yes';
+  showSteroidsNameOS(): boolean {
+    return this.urisForm.get('topicalSteroidsOS')?.value === 'Yes';
+  }
+
+  showNSAIDNameOD(): boolean {
+    return this.urisForm.get('topicalNSAIDOD')?.value === 'Yes';
+  }
+
+  showNSAIDNameOS(): boolean {
+    return this.urisForm.get('topicalNSAIDOS')?.value === 'Yes';
   }
 
   markComplete(): void {

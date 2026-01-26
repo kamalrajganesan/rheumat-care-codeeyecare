@@ -16,7 +16,7 @@
     <h2>Dose details (only for selected meds)</h2>
 
     <div *ngIf="showSteroidDose()">
-      <label for="steroidDose">Systemic steroid dose / regimen</label>
+      <label for="steroidDose">Systemic Steroid Dose / Regimen</label>
       <input
         type="text"
         id="steroidDose"
@@ -26,7 +26,7 @@
     </div>
 
     <div *ngIf="showMethotrexateDose()">
-      <label for="methotrexateDose">Methotrexate dose (mg/week)</label>
+      <label for="methotrexateDose">Methotrexate Dose (mg/week)</label>
       <input
         type="number"
         id="methotrexateDose"
@@ -36,30 +36,21 @@
       />
     </div>
 
-    <div *ngIf="showHCQDose()">
-      <div class="row">
-        <div>
-          <label for="hcqDailyDose">HCQ daily dose (mg/day)</label>
-          <select id="hcqDailyDose" formControlName="hcqDailyDose">
-            <option [value]="null">Select…</option>
-            <option *ngFor="let dose of hcqDailyDoses" [value]="dose">{{ dose }}</option>
-          </select>
-        </div>
-        <div>
-          <label for="hcqTotalMonths">HCQ total duration (months)</label>
-          <input
-            type="number"
-            id="hcqTotalMonths"
-            formControlName="hcqTotalMonths"
-            min="0"
-            step="1"
-          />
-        </div>
-      </div>
-      <div class="small mono">Cumulative dose: {{ hcqCumulativeDose }}</div>
+    <div *ngIf="showHCQDose()" class="hcq-note">
+      <div class="small">HCQ dosing details will be entered in the HCQ Screening module below.</div>
     </div>
 
-    <label for="otherMedDetails">Other medication details</label>
-    <textarea id="otherMedDetails" formControlName="otherMedDetails"></textarea>
+    <div *ngIf="showOtherMedication()">
+      <label for="otherMedName">Other Medication Name / Dose</label>
+      <input
+        type="text"
+        id="otherMedName"
+        formControlName="otherMedName"
+        placeholder="e.g., Azathioprine 50 mg BD"
+      />
+    </div>
+
+    <label for="otherMedDetails">Additional Medication Notes</label>
+    <textarea id="otherMedDetails" formControlName="otherMedDetails" placeholder="Any other relevant details..."></textarea>
   </div>
 </form>

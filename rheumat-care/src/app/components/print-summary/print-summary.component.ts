@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { ExportService } from '../../services/export.service';
-import { RheumatCareData } from '../../models/patient-data.model';
 
 @Component({
   selector: 'app-print-summary',
@@ -20,9 +19,10 @@ export class PrintSummaryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.dataSubscription = this.dataService.data$.subscribe(data => {
-      this.summaryHTML = this.exportService.generatePrintHTML(data);
-    });
+    this.dataSubscription = this.dataService.data$
+      .subscribe(data => {
+        this.summaryHTML = this.exportService.generatePrintHTML(data);
+      });
   }
 
   ngOnDestroy(): void {

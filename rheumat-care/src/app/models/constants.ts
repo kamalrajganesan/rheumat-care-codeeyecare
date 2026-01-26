@@ -170,13 +170,14 @@ export const SURGERY_CLEARANCE_OPTIONS = [
 // HCQ Module Constants
 export const HCQ_SCREENING_TYPES = [
   'Baseline',
-  'Annual / Follow-up'
+  'Annual / Follow-up',
+  'Not done'
 ];
 
 export const HCQ_TESTS = [
   'Macula OCT',
   'Fundus photo',
-  'HVF 10-2/24-2',
+  'HVF',
   'MF-ERG (if required)'
 ];
 

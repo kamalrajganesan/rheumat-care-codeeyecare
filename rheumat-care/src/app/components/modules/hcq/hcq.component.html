@@ -5,7 +5,7 @@
   </div>
 
   <form [formGroup]="hcqForm">
-    <label for="screeningType">HCQ screening type</label>
+    <label for="screeningType">HCQ Screening Type</label>
     <select id="screeningType" formControlName="screeningType">
       <option value="">Select…</option>
       <option *ngFor="let type of screeningTypes" [value]="type">{{ type }}</option>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="cumulative-dose">
-      <label>Cumulative HCQ dose</label>
+      <label>Cumulative HCQ Dose</label>
       <div class="calculated-value">{{ cumulativeDose || '—' }}</div>
     </div>
 
@@ -50,7 +50,7 @@
 
     <div class="divider"></div>
 
-    <label for="toxicitySigns">Signs of toxicity</label>
+    <label for="toxicitySigns">Signs of Toxicity</label>
     <select id="toxicitySigns" formControlName="toxicitySigns">
       <option value="">Select…</option>
       <option *ngFor="let option of toxicityOptions" [value]="option">{{ option }}</option>

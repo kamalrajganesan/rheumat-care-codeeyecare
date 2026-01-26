@@ -1,6 +1,6 @@
 <h2>Rheumatologist Sheet (Common)</h2>
 <form [formGroup]="rheumatologistForm">
-  <label>Systemic diagnosis (tick that applies)</label>
+  <label>Systemic Diagnosis (tick that applies)</label>
   <div class="checks">
     <label *ngFor="let diagnosis of systemicDiagnoses" class="check">
       <input
@@ -11,8 +11,17 @@
       <span>{{ diagnosis }}</span>
     </label>
   </div>
+  <div *ngIf="showOtherDiagnosis()">
+    <label for="otherDiagnosis">Please specify other diagnosis</label>
+    <input
+      type="text"
+      id="otherDiagnosis"
+      formControlName="otherDiagnosis"
+      placeholder="Enter other diagnosis details"
+    />
+  </div>
 
-  <label for="finalSystemicDiagnosis">Final systemic diagnosis (if known)</label>
+  <label for="finalSystemicDiagnosis">Final Systemic Diagnosis (if known)</label>
   <input
     type="text"
     id="finalSystemicDiagnosis"
@@ -22,7 +31,7 @@
 
   <div class="row">
     <div>
-      <label for="serologyStatus">Serology status</label>
+      <label for="serologyStatus">Serology Status</label>
       <select id="serologyStatus" formControlName="serologyStatus">
         <option value="">Select…</option>
         <option *ngFor="let status of serologyStatuses" [value]="status">{{ status }}</option>
@@ -39,14 +48,14 @@
 
   <div class="row">
     <div>
-      <label for="treatmentTarget">Treatment target</label>
+      <label for="treatmentTarget">Treatment Target</label>
       <select id="treatmentTarget" formControlName="treatmentTarget">
         <option value="">Select…</option>
         <option *ngFor="let target of treatmentTargets" [value]="target">{{ target }}</option>
       </select>
     </div>
     <div>
-      <label for="diseaseActivityScore">Disease activity score</label>
+      <label for="diseaseActivityScore">Disease Activity Score</label>
       <input type="text" id="diseaseActivityScore" formControlName="diseaseActivityScore" />
     </div>
   </div>
@@ -62,6 +71,6 @@
     </div>
   </div>
 
-  <label for="rheumatologistImpression">Rheumatologist's impression</label>
+  <label for="rheumatologistImpression">Rheumatologist's Impression</label>
   <textarea id="rheumatologistImpression" formControlName="rheumatologistImpression"></textarea>
 </form>

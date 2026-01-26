@@ -5,40 +5,183 @@
   </div>
 
   <form [formGroup]="urisForm">
-    <label for="laterality">Laterality</label>
-    <select id="laterality" formControlName="laterality">
-      <option value="">Select…</option>
-      <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
-    </select>
-
+    <!-- Visit -->
     <label for="visit">Visit</label>
     <select id="visit" formControlName="visit">
       <option value="">Select…</option>
       <option *ngFor="let type of visitTypes" [value]="type">{{ type }}</option>
     </select>
 
-    <label for="uveitisStatus">Uveitis status</label>
-    <select id="uveitisStatus" formControlName="uveitisStatus">
-      <option value="">Select…</option>
-      <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
-    </select>
+    <div class="miniGrid3">
+      <div></div>
+      <div class="small header-label">OD</div>
+      <div class="small header-label">OS</div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Uveitis Status</label></div>
+      <div>
+        <select formControlName="uveitisStatusOD">
+          <option value="">Select…</option>
+          <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="uveitisStatusOS">
+          <option value="">Select…</option>
+          <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+    </div>
 
     <div class="divider"></div>
 
-    <label for="anatomicalType">Uveitis anatomical type</label>
-    <select id="anatomicalType" formControlName="anatomicalType">
-      <option value="">Select…</option>
-      <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
-    </select>
+    <!-- Uveitis anatomical type, Uveitis nature -->
+    <div class="miniGrid3">
+      <div></div>
+      <div class="small header-label">OD</div>
+      <div class="small header-label">OS</div>
+    </div>
 
-    <label for="nature">Uveitis nature</label>
-    <select id="nature" formControlName="nature">
-      <option value="">Select…</option>
-      <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
-    </select>
+    <div class="miniGrid3">
+      <div><label>Uveitis Anatomical Type</label></div>
+      <div>
+        <select formControlName="anatomicalTypeOD">
+          <option value="">Select…</option>
+          <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="anatomicalTypeOS">
+          <option value="">Select…</option>
+          <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Uveitis Nature</label></div>
+      <div>
+        <select formControlName="natureOD">
+          <option value="">Select…</option>
+          <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="natureOS">
+          <option value="">Select…</option>
+          <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+    </div>
 
     <div class="divider"></div>
 
+    <!-- Episode pattern, Number of episodes, Was prior treatment course completed? -->
+    <div class="miniGrid3">
+      <div></div>
+      <div class="small header-label">OD</div>
+      <div class="small header-label">OS</div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Episode Pattern</label></div>
+      <div>
+        <select formControlName="episodePatternOD">
+          <option value="">Select…</option>
+          <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="episodePatternOS">
+          <option value="">Select…</option>
+          <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Number of episodes (last 1–2 years)</label></div>
+      <div>
+        <select formControlName="episodesCountOD">
+          <option value="">Select…</option>
+          <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="episodesCountOS">
+          <option value="">Select…</option>
+          <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Was prior treatment course completed?</label></div>
+      <div>
+        <select formControlName="priorCourseCompletedOD">
+          <option value="">Select…</option>
+          <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      <div>
+        <select formControlName="priorCourseCompletedOS">
+          <option value="">Select…</option>
+          <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Current Topical treatment -->
+    <h2 class="section-title">Current Topical treatment</h2>
+
+    <div class="miniGrid3">
+      <div></div>
+      <div class="small header-label">OD</div>
+      <div class="small header-label">OS</div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Topical Steroids</label></div>
+      <div>
+        <select formControlName="topicalSteroidsOD">
+          <option value="">Select…</option>
+          <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+        </select>
+        <input *ngIf="showSteroidsNameOD()" type="text" formControlName="topicalSteroidsNameOD" placeholder="Name / dose" />
+      </div>
+      <div>
+        <select formControlName="topicalSteroidsOS">
+          <option value="">Select…</option>
+          <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+        </select>
+        <input *ngIf="showSteroidsNameOS()" type="text" formControlName="topicalSteroidsNameOS" placeholder="Name / dose" />
+      </div>
+    </div>
+
+    <div class="miniGrid3">
+      <div><label>Topical NSAID</label></div>
+      <div>
+        <select formControlName="topicalNSAIDOD">
+          <option value="">Select…</option>
+          <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+        </select>
+        <input *ngIf="showNSAIDNameOD()" type="text" formControlName="topicalNSAIDNameOD" placeholder="Name / dose" />
+      </div>
+      <div>
+        <select formControlName="topicalNSAIDOS">
+          <option value="">Select…</option>
+          <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
+        </select>
+        <input *ngIf="showNSAIDNameOS()" type="text" formControlName="topicalNSAIDNameOS" placeholder="Name / dose" />
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Likely / confirmed diagnosis -->
     <label>Likely / confirmed diagnosis (tick that applies)</label>
     <div class="checks">
       <label *ngFor="let diagnosis of diagnoses" class="check">
@@ -61,62 +204,7 @@
 
     <div class="divider"></div>
 
-    <label for="episodePattern">Episode pattern</label>
-    <select id="episodePattern" formControlName="episodePattern">
-      <option value="">Select…</option>
-      <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
-    </select>
-
-    <label for="episodesCount">Number of episodes (last 1–2 years)</label>
-    <select id="episodesCount" formControlName="episodesCount">
-      <option value="">Select…</option>
-      <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
-    </select>
-
-    <label for="priorCourseCompleted">Was prior treatment course completed?</label>
-    <select id="priorCourseCompleted" formControlName="priorCourseCompleted">
-      <option value="">Select…</option>
-      <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
-    </select>
-
-    <div class="divider"></div>
-
-    <h2 class="section-title">Topical treatment</h2>
-
-    <label>Topical steroids</label>
-    <div class="row">
-      <select formControlName="topicalSteroidsUse">
-        <option value="">Select…</option>
-        <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
-      </select>
-      <select formControlName="topicalSteroidsLaterality">
-        <option value="">Laterality…</option>
-        <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
-      </select>
-    </div>
-    <div *ngIf="showSteroidsDetails()">
-      <label for="steroidsName">Name</label>
-      <input type="text" id="steroidsName" formControlName="topicalSteroidsName" />
-    </div>
-
-    <label>Topical NSAID</label>
-    <div class="row">
-      <select formControlName="topicalNSAIDUse">
-        <option value="">Select…</option>
-        <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
-      </select>
-      <select formControlName="topicalNSAIDLaterality">
-        <option value="">Laterality…</option>
-        <option *ngFor="let lat of lateralityOptions" [value]="lat">{{ lat }}</option>
-      </select>
-    </div>
-    <div *ngIf="showNSAIDDetails()">
-      <label for="nsaidName">Name</label>
-      <input type="text" id="nsaidName" formControlName="topicalNSAIDName" />
-    </div>
-
-    <div class="divider"></div>
-
+    <!-- Coordination / action items -->
     <h2 class="section-title">Coordination / action items</h2>
     <div class="checks onecol">
       <label *ngFor="let item of actionItems" class="check">
@@ -129,13 +217,15 @@
       </label>
     </div>
 
+    <!-- Need rheumatology clearance for surgery? -->
     <label for="surgeryClearance">Need rheumatology clearance for surgery?</label>
     <select id="surgeryClearance" formControlName="surgeryClearance">
       <option value="">Select…</option>
       <option *ngFor="let option of surgeryClearanceOptions" [value]="option">{{ option }}</option>
     </select>
 
-    <label for="ophInput">Ophthalmologist input</label>
+    <!-- Ophthalmologist input -->
+    <label for="ophInput">Ophthalmologist Input</label>
     <textarea id="ophInput" formControlName="ophthalmologistInput"></textarea>
 
     <div class="divider"></div>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { VISIT_TYPES } from '../../models/constants';
 import { debounceTime } from 'rxjs/operators';
@@ -10,9 +11,10 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./patient-visit.component.scss'],
   standalone: false
 })
-export class PatientVisitComponent implements OnInit {
+export class PatientVisitComponent implements OnInit, OnDestroy {
   patientForm!: FormGroup;
   visitTypes = VISIT_TYPES;
+  private resetSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -32,5 +34,15 @@ export class PatientVisitComponent implements OnInit {
       .subscribe(values => {
         this.dataService.updatePatientVisit(values);
       });
+
+    this.resetSubscription = this.dataService.reset$.subscribe(() => {
+      this.patientForm.reset();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
+    }
   }
 }
