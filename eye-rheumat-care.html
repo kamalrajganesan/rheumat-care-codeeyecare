@@ -86,7 +86,7 @@
           <input type="text" id="ptName" />
         </div>
         <div>
-          <label>CEC number</label>
+          <label>MR number</label>
           <input type="text" id="cecNo" />
         </div>
       </div>
@@ -727,7 +727,7 @@
           <div><div style="font-size:16px;font-weight:800;margin-bottom:2px;">CODE Eye Care – Rheumatology Interface Summary</div></div>
         </div>
         <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
-        <div><b>Patient:</b> ${escapeHtml($("ptName").value||"—")} &nbsp; | &nbsp; <b>CEC:</b> ${escapeHtml($("cecNo").value||"—")}</div>
+        <div><b>Patient:</b> ${escapeHtml($("ptName").value||"—")} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml($("cecNo").value||"—")}</div>
         <div><b>Rheumatologist:</b> ${escapeHtml($("rheumName").value||"—")}</div>
         <div><b>Visit type:</b> ${escapeHtml($("visitType").value||"—")}</div>
         <div><b>Modules included:</b> ${mods.length?mods.join(", "):"—"}</div>
@@ -872,7 +872,7 @@
     const data = {
       stamp: nowStamp(),
       patient: $("ptName").value.trim(),
-      cec: $("cecNo").value.trim(),
+      MR: $("cecNo").value.trim(),
       rheumatologist: $("rheumName").value.trim(),
       visitType: $("visitType").value,
       systemicDiagnosis: sysDx,

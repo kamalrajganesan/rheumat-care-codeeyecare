@@ -6,7 +6,8 @@
       "Bash(npx -y @angular/cli@latest version)",
       "Bash(npx:*)",
       "Bash(npm run build:*)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }

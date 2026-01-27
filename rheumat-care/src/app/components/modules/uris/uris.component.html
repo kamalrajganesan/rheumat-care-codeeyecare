@@ -12,6 +12,13 @@
       <option *ngFor="let type of visitTypes" [value]="type">{{ type }}</option>
     </select>
 
+    <!-- Laterality -->
+    <label for="laterality">Laterality</label>
+    <select id="laterality" formControlName="laterality">
+      <option value="">Select…</option>
+      <option *ngFor="let option of lateralityOptions" [value]="option">{{ option }}</option>
+    </select>
+
     <div class="miniGrid3">
       <div></div>
       <div class="small header-label">OD</div>
@@ -21,13 +28,13 @@
     <div class="miniGrid3">
       <div><label>Uveitis Status</label></div>
       <div>
-        <select formControlName="uveitisStatusOD">
+        <select formControlName="uveitisStatusOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="uveitisStatusOS">
+        <select formControlName="uveitisStatusOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let status of uveitisStatuses" [value]="status">{{ status }}</option>
         </select>
@@ -46,13 +53,13 @@
     <div class="miniGrid3">
       <div><label>Uveitis Anatomical Type</label></div>
       <div>
-        <select formControlName="anatomicalTypeOD">
+        <select formControlName="anatomicalTypeOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="anatomicalTypeOS">
+        <select formControlName="anatomicalTypeOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let type of anatomicalTypes" [value]="type">{{ type }}</option>
         </select>
@@ -62,13 +69,13 @@
     <div class="miniGrid3">
       <div><label>Uveitis Nature</label></div>
       <div>
-        <select formControlName="natureOD">
+        <select formControlName="natureOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="natureOS">
+        <select formControlName="natureOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
         </select>
@@ -87,13 +94,13 @@
     <div class="miniGrid3">
       <div><label>Episode Pattern</label></div>
       <div>
-        <select formControlName="episodePatternOD">
+        <select formControlName="episodePatternOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="episodePatternOS">
+        <select formControlName="episodePatternOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let pattern of episodePatterns" [value]="pattern">{{ pattern }}</option>
         </select>
@@ -103,13 +110,13 @@
     <div class="miniGrid3">
       <div><label>Number of episodes (last 1–2 years)</label></div>
       <div>
-        <select formControlName="episodesCountOD">
+        <select formControlName="episodesCountOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="episodesCountOS">
+        <select formControlName="episodesCountOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let count of episodeCounts" [value]="count">{{ count }}</option>
         </select>
@@ -119,13 +126,13 @@
     <div class="miniGrid3">
       <div><label>Was prior treatment course completed?</label></div>
       <div>
-        <select formControlName="priorCourseCompletedOD">
+        <select formControlName="priorCourseCompletedOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
         </select>
       </div>
       <div>
-        <select formControlName="priorCourseCompletedOS">
+        <select formControlName="priorCourseCompletedOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of courseCompletedOptions" [value]="option">{{ option }}</option>
         </select>
@@ -146,36 +153,36 @@
     <div class="miniGrid3">
       <div><label>Topical Steroids</label></div>
       <div>
-        <select formControlName="topicalSteroidsOD">
+        <select formControlName="topicalSteroidsOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
         </select>
-        <input *ngIf="showSteroidsNameOD()" type="text" formControlName="topicalSteroidsNameOD" placeholder="Name / dose" />
+        <input *ngIf="showSteroidsNameOD()" type="text" formControlName="topicalSteroidsNameOD" placeholder="Name / dose" [attr.disabled]="isODDisabled() ? true : null" />
       </div>
       <div>
-        <select formControlName="topicalSteroidsOS">
+        <select formControlName="topicalSteroidsOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
         </select>
-        <input *ngIf="showSteroidsNameOS()" type="text" formControlName="topicalSteroidsNameOS" placeholder="Name / dose" />
+        <input *ngIf="showSteroidsNameOS()" type="text" formControlName="topicalSteroidsNameOS" placeholder="Name / dose" [attr.disabled]="isOSDisabled() ? true : null" />
       </div>
     </div>
 
     <div class="miniGrid3">
       <div><label>Topical NSAID</label></div>
       <div>
-        <select formControlName="topicalNSAIDOD">
+        <select formControlName="topicalNSAIDOD" [attr.disabled]="isODDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
         </select>
-        <input *ngIf="showNSAIDNameOD()" type="text" formControlName="topicalNSAIDNameOD" placeholder="Name / dose" />
+        <input *ngIf="showNSAIDNameOD()" type="text" formControlName="topicalNSAIDNameOD" placeholder="Name / dose" [attr.disabled]="isODDisabled() ? true : null" />
       </div>
       <div>
-        <select formControlName="topicalNSAIDOS">
+        <select formControlName="topicalNSAIDOS" [attr.disabled]="isOSDisabled() ? true : null">
           <option value="">Select…</option>
           <option *ngFor="let option of yesNoOptions" [value]="option">{{ option }}</option>
         </select>
-        <input *ngIf="showNSAIDNameOS()" type="text" formControlName="topicalNSAIDNameOS" placeholder="Name / dose" />
+        <input *ngIf="showNSAIDNameOS()" type="text" formControlName="topicalNSAIDNameOS" placeholder="Name / dose" [attr.disabled]="isOSDisabled() ? true : null" />
       </div>
     </div>
 

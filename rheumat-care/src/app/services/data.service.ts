@@ -16,7 +16,6 @@ export class DataService {
     rheumatologistSheet: {
       systemicDiagnosis: [],
       otherDiagnosis: '',
-      finalSystemicDiagnosis: '',
       serologyStatus: '',
       diseaseStatus: '',
       treatmentTarget: '',
@@ -210,7 +209,6 @@ export class DataService {
       rheumatologistSheet: {
         systemicDiagnosis: [],
         otherDiagnosis: '',
-        finalSystemicDiagnosis: '',
         serologyStatus: '',
         diseaseStatus: '',
         treatmentTarget: '',

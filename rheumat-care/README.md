@@ -9,7 +9,7 @@ RheumatCare streamlines the documentation workflow between rheumatologists and o
 ## Features
 
 ### Patient Visit Management
-- Patient identification (Name, CEC Number)
+- Patient identification (Name, MR Number)
 - Rheumatologist assignment
 - Visit type tracking (First visit, Follow-up, Reports review, Urgent/flare, Others)
 

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { RheumatCareData } from '../models/patient-data.model';
 
+export type PrintFormat = 'codeEyeCare' | 'letterhead';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +10,7 @@ export class ExportService {
 
   constructor() { }
 
-  generatePrintHTML(data: RheumatCareData): string {
+  generatePrintHTML(data: RheumatCareData, format: PrintFormat = 'codeEyeCare'): string {
     const escapeHtml = (str: string): string => {
       return String(str || '').replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -16,20 +18,41 @@ export class ExportService {
         .replace(/"/g, '&quot;');
     };
 
-    let html = `
-      <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
-        <div style="">
-          <div>
-            <div style="font-size:16px;font-weight:800;margin-bottom:2px;">Eye Rheumatology Interface Summary</div>
-          </div>
+    const isLetterhead = format === 'letterhead';
+
+    // Header section - different based on format
+    let html = '';
+
+    if (isLetterhead) {
+      // Letterhead format: blank header space for custom letterhead
+      html += `
+        <div style="height:100px;"></div>
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:8px;">Eye Rheumatology Interface Summary</div>
+          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
+          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
+          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '—')}</div>
+          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : '—'}</div>
         </div>
-        <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
-        <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>CEC:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
-        <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
-        <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '—')}</div>
-        <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : '—'}</div>
-      </div>
-    `;
+      `;
+    } else {
+      // Code Eye Care format: with logo and branding
+      html += `
+        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+          <div style="">
+            <img src="assets/images/code-eye-care-logo.png" style="height:42px;width:auto;object-fit:contain;" onerror="this.style.display='none'" /><br>
+            <div>
+              <div style="font-size:16px;font-weight:800;margin-bottom:2px;">Eye Rheumatology Interface Summary</div>
+            </div>
+          </div>
+          <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
+          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
+          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
+          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '—')}</div>
+          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : '—'}</div>
+        </div>
+      `;
+    }
 
     // Rheumatologist Sheet
     html += `
@@ -37,7 +60,6 @@ export class ExportService {
         <div style="font-weight:800;margin-bottom:6px;">Rheumatologist Sheet</div>
         <div><b>Systemic Diagnosis:</b> ${data.rheumatologistSheet.systemicDiagnosis.length ? data.rheumatologistSheet.systemicDiagnosis.join(', ') : '—'}</div>
         ${data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis ? `<div><b>Other Diagnosis Details:</b> ${escapeHtml(data.rheumatologistSheet.otherDiagnosis)}</div>` : ''}
-        <div><b>Final Systemic Diagnosis:</b> ${escapeHtml(data.rheumatologistSheet.finalSystemicDiagnosis || '—')}</div>
         <div><b>Serology Status:</b> ${escapeHtml(data.rheumatologistSheet.serologyStatus || '—')}</div>
         <div><b>Status:</b> ${escapeHtml(data.rheumatologistSheet.diseaseStatus || '—')}</div>
         <div><b>Treatment Target:</b> ${escapeHtml(data.rheumatologistSheet.treatmentTarget || '—')}</div>
@@ -151,18 +173,34 @@ export class ExportService {
       `;
     }
 
-    html += `
-      <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
-        <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
-        <div style="margin-top:6px;font-style:italic;">Developed by CODE Eye Care. This tool is intended for screening purposes only and clinical decisions remain the responsibility of the treating clinician.</div>
-      </div>
-    `;
+    if (isLetterhead) {
+      // Letterhead format: footer with attribution and blank space for custom letterhead
+      html += `
+        <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
+          <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
+          <div style="margin-top:6px;font-style:italic;">Developed by CODE Eye Care. This tool is intended for screening purposes only and clinical decisions remain the responsibility of the treating clinician.</div>
+        </div>
+        <div style="height:80px;"></div>
+      `;
+    } else {
+      // Code Eye Care format: full branding footer
+      html += `
+        <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
+          <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
+          <div style="margin-top:6px;font-style:italic;">
+            <strong>Developed by CODE Eye Care - Institute of Excellence for Cornea, Ocular Surface & Dry Eye </strong><br/>
+            This tool supports structured clinical documentation and interdisciplinary communication. Final diagnosis and clinical decisions remain the responsibility of the treating clinician.
+          </div>
+        </div>
+      `;
+    }
 
     return html;
   }
 
-  printSummary(data: RheumatCareData): void {
-    const html = this.generatePrintHTML(data);
+  printSummary(data: RheumatCareData, format: PrintFormat = 'codeEyeCare'): void {
+    const html = this.generatePrintHTML(data, format);
+    const isLetterhead = format === 'letterhead';
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.open();
@@ -176,6 +214,15 @@ export class ExportService {
           <style>
             body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;}
             img{max-width:100%;}
+            ${isLetterhead ? `
+            @page {
+              margin-top: 25mm;
+              margin-bottom: 20mm;
+            }
+            @media print {
+              body { margin-top: 0; }
+            }
+            ` : ''}
           </style>
         </head>
         <body>${html}<script>window.onload=()=>{window.print();}<\/script></body>
@@ -213,7 +260,7 @@ export class ExportService {
     // Patient & Visit Info
     addSection('PATIENT & VISIT INFO');
     addRow('Patient Name', data.patientVisit.patientName);
-    addRow('CEC Number', data.patientVisit.cecNumber);
+    addRow('MR Number', data.patientVisit.cecNumber);
     addRow('Rheumatologist Name', data.patientVisit.rheumatologistName);
     addRow('Visit Type', data.patientVisit.visitType);
     addRow('Modules Included', data.selectedModules.join('; ') || '—');
@@ -224,7 +271,6 @@ export class ExportService {
     if (data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis) {
       addRow('Other Diagnosis Details', data.rheumatologistSheet.otherDiagnosis);
     }
-    addRow('Final Systemic Diagnosis', data.rheumatologistSheet.finalSystemicDiagnosis);
     addRow('Serology Status', data.rheumatologistSheet.serologyStatus);
     addRow('Disease Status', data.rheumatologistSheet.diseaseStatus);
     addRow('Treatment Target', data.rheumatologistSheet.treatmentTarget);

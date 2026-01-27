@@ -10,7 +10,7 @@ CODE Eye Care - Rheumatology Interface Application
 
   1. Patient & Visit Management
 
-  - Patient identification (name, CEC number)
+  - Patient identification (name, MR number)
   - Rheumatologist information
   - Visit type categorization
 

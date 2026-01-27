@@ -8,7 +8,6 @@ export interface PatientVisit {
 export interface RheumatologistSheet {
   systemicDiagnosis: string[];
   otherDiagnosis?: string;
-  finalSystemicDiagnosis: string;
   serologyStatus: string;
   diseaseStatus: string;
   treatmentTarget: string;

@@ -5,7 +5,7 @@ An Angular application for managing rheumatology patient data with specialized m
 ## Features
 
 ### Core Functionality
-- **Patient & Visit Management**: Track patient information, CEC numbers, and visit types
+- **Patient & Visit Management**: Track patient information, MR numbers, and visit types
 - **Rheumatologist Sheet**: Record systemic diagnosis, serology status, disease activity scores, and clinical impressions
 - **Medication Management**: Track systemic medications with dose details and HCQ cumulative dose calculator
 - **Module Selection**: Dynamic module loading based on patient needs

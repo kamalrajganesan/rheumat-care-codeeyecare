@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { ExportService } from '../../services/export.service';
+import { ExportService, PrintFormat } from '../../services/export.service';
 import { RheumatCareData } from '../../models/patient-data.model';
 
 @Component({
@@ -10,11 +10,21 @@ import { RheumatCareData } from '../../models/patient-data.model';
   standalone: false
 })
 export class HeaderComponent {
+  showPdfMenu = false;
 
   constructor(
     private dataService: DataService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private elementRef: ElementRef
   ) {}
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    // Close dropdown if clicked outside
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.showPdfMenu = false;
+    }
+  }
 
   onReset(): void {
     if (confirm('Reset all fields? This will clear all entered data.')) {
@@ -28,9 +38,24 @@ export class HeaderComponent {
     this.exportService.downloadCSV(data);
   }
 
-  onPrint(): void {
+  togglePdfMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showPdfMenu = !this.showPdfMenu;
+  }
+
+  onPrintCodeEyeCare(event: MouseEvent): void {
+    event.stopPropagation();
     this.dataService.updateTimestamp();
     const data = this.dataService.getData();
-    this.exportService.printSummary(data);
+    this.exportService.printSummary(data, 'codeEyeCare');
+    this.showPdfMenu = false;
+  }
+
+  onPrintLetterhead(event: MouseEvent): void {
+    event.stopPropagation();
+    this.dataService.updateTimestamp();
+    const data = this.dataService.getData();
+    this.exportService.printSummary(data, 'letterhead');
+    this.showPdfMenu = false;
   }
 }

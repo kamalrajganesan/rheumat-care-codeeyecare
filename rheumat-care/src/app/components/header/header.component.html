@@ -9,6 +9,19 @@
   <div class="actions">
     <button class="ghost" (click)="onReset()">Reset</button>
     <button (click)="onDownloadCSV()">Download CSV</button>
-    <button class="primary" (click)="onPrint()">Print / Save PDF</button>
+    <div class="pdf-dropdown">
+      <button class="primary" (click)="togglePdfMenu($event)">
+        Print / Save PDF
+        <span class="dropdown-arrow" [class.open]="showPdfMenu">&#9662;</span>
+      </button>
+      <div class="pdf-menu" *ngIf="showPdfMenu">
+        <button type="button" class="menu-item" (click)="onPrintCodeEyeCare($event)">
+          CODE Eye Care Format
+        </button>
+        <button type="button" class="menu-item" (click)="onPrintLetterhead($event)">
+          Custom Letterhead Format
+        </button>
+      </div>
+    </div>
   </div>
 </div>

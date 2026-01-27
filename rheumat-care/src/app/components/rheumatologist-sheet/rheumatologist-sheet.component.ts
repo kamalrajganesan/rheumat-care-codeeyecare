@@ -28,7 +28,6 @@ export class RheumatologistSheetComponent implements OnInit, OnDestroy {
     this.rheumatologistForm = this.fb.group({
       systemicDiagnosis: [[]],
       otherDiagnosis: [''],
-      finalSystemicDiagnosis: [''],
       serologyStatus: [''],
       diseaseStatus: [''],
       treatmentTarget: [''],

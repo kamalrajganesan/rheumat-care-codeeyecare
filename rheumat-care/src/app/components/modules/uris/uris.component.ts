@@ -51,6 +51,7 @@ export class UrisComponent implements OnInit, OnDestroy {
 
     this.urisForm = this.fb.group({
       visit: [''],
+      laterality: [''],
       uveitisStatusOD: [''],
       uveitisStatusOS: [''],
       anatomicalTypeOD: [''],
@@ -149,6 +150,16 @@ export class UrisComponent implements OnInit, OnDestroy {
 
   showNSAIDNameOS(): boolean {
     return this.urisForm.get('topicalNSAIDOS')?.value === 'Yes';
+  }
+
+  isODDisabled(): boolean {
+    const laterality = this.urisForm.get('laterality')?.value;
+    return laterality === 'OS';
+  }
+
+  isOSDisabled(): boolean {
+    const laterality = this.urisForm.get('laterality')?.value;
+    return laterality === 'OD';
   }
 
   markComplete(): void {
