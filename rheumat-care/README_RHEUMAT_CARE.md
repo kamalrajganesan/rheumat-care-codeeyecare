@@ -22,6 +22,7 @@ An Angular application for managing rheumatology patient data with specialized m
 
 #### URIS (Uvea-Rheumat Interface Sheet)
 - Uveitis classification (anatomical & nature)
+- FFA (Fundus Fluorescein Angiography) findings
 - Episode tracking and patterns
 - Differential diagnosis management
 - Topical treatment protocols

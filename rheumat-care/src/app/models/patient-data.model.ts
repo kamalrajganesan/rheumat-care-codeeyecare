@@ -67,6 +67,8 @@ export interface URISModule {
   anatomicalTypeOS: string;
   natureOD: string;
   natureOS: string;
+  ffaOD: string;
+  ffaOS: string;
   episodePatternOD: string;
   episodePatternOS: string;
   episodesCountOD: string;

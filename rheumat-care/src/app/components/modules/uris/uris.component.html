@@ -82,6 +82,16 @@
       </div>
     </div>
 
+    <div class="miniGrid3">
+      <div><label>FFA</label></div>
+      <div>
+        <input type="text" formControlName="ffaOD" placeholder="FFA findings" [attr.disabled]="isODDisabled() ? true : null" />
+      </div>
+      <div>
+        <input type="text" formControlName="ffaOS" placeholder="FFA findings" [attr.disabled]="isOSDisabled() ? true : null" />
+      </div>
+    </div>
+
     <div class="divider"></div>
 
     <!-- Episode pattern, Number of episodes, Was prior treatment course completed? -->

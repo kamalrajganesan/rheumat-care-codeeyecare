@@ -143,6 +143,8 @@ export class DataService {
           anatomicalTypeOS: '',
           natureOD: '',
           natureOS: '',
+          ffaOD: '',
+          ffaOS: '',
           episodePatternOD: '',
           episodePatternOS: '',
           episodesCountOD: '',

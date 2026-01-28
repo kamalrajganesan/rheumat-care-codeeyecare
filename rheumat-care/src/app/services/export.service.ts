@@ -27,7 +27,7 @@ export class ExportService {
       // Letterhead format: blank header space for custom letterhead
       html += `
         <div style="height:100px;"></div>
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
           <div style="font-size:16px;font-weight:800;margin-bottom:8px;">Eye Rheumatology Interface Summary</div>
           <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
           <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
@@ -38,7 +38,7 @@ export class ExportService {
     } else {
       // Code Eye Care format: with logo and branding
       html += `
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
           <div style="">
             <img src="assets/images/code-eye-care-logo.png" style="height:42px;width:auto;object-fit:contain;" onerror="this.style.display='none'" /><br>
             <div>
@@ -56,7 +56,7 @@ export class ExportService {
 
     // Rheumatologist Sheet
     html += `
-      <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+      <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
         <div style="font-weight:800;margin-bottom:6px;">Rheumatologist Sheet</div>
         <div><b>Systemic Diagnosis:</b> ${data.rheumatologistSheet.systemicDiagnosis.length ? data.rheumatologistSheet.systemicDiagnosis.join(', ') : '—'}</div>
         ${data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis ? `<div><b>Other Diagnosis Details:</b> ${escapeHtml(data.rheumatologistSheet.otherDiagnosis)}</div>` : ''}
@@ -72,7 +72,7 @@ export class ExportService {
     // Medications
     if (data.medications.selectedMeds.length > 0) {
       html += `
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">Current systemic medications</div>
           <div><b>Meds:</b> ${data.medications.selectedMeds.join(', ')}</div>
       `;
@@ -82,9 +82,6 @@ export class ExportService {
       }
       if (data.medications.selectedMeds.includes('Methotrexate') && data.medications.methotrexateDose) {
         html += `<div><b>Methotrexate:</b> ${data.medications.methotrexateDose} mg/week</div>`;
-      }
-      if (data.medications.selectedMeds.includes('Hydroxychloroquine (HCQ)')) {
-        html += `<div><b>HCQ:</b> See HCQ Screening module for dosing details</div>`;
       }
       if (data.medications.selectedMeds.includes('Others') && data.medications.otherMedName) {
         html += `<div><b>Other Medication:</b> ${escapeHtml(data.medications.otherMedName)}</div>`;
@@ -103,7 +100,7 @@ export class ExportService {
         .join(', ');
 
       html += `
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">CRIS – Cornea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.cris.completed ? 'Complete' : 'Pending'}</div>
           <div><b>DEQ5:</b> OD ${data.cris.deq5OD ?? '—'} | OS ${data.cris.deq5OS ?? '—'}</div>
@@ -126,13 +123,14 @@ export class ExportService {
     // URIS Module
     if (data.selectedModules.includes('URIS (Uvea–Rheumat)') && data.uris) {
       html += `
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">URIS – Uvea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.uris.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Visit:</b> ${escapeHtml(data.uris.visit || '—')}</div>
           <div><b>Uveitis Status:</b> OD ${escapeHtml(data.uris.uveitisStatusOD || '—')} | OS ${escapeHtml(data.uris.uveitisStatusOS || '—')}</div>
           <div><b>Anatomical Type:</b> OD ${escapeHtml(data.uris.anatomicalTypeOD || '—')} | OS ${escapeHtml(data.uris.anatomicalTypeOS || '—')}</div>
           <div><b>Nature:</b> OD ${escapeHtml(data.uris.natureOD || '—')} | OS ${escapeHtml(data.uris.natureOS || '—')}</div>
+          <div><b>FFA:</b> OD ${escapeHtml(data.uris.ffaOD || '—')} | OS ${escapeHtml(data.uris.ffaOS || '—')}</div>
           <div><b>Episode Pattern:</b> OD ${escapeHtml(data.uris.episodePatternOD || '—')} | OS ${escapeHtml(data.uris.episodePatternOS || '—')}</div>
           <div><b>Episodes (Last 1–2 Years):</b> OD ${escapeHtml(data.uris.episodesCountOD || '—')} | OS ${escapeHtml(data.uris.episodesCountOS || '—')}</div>
           <div><b>Prior Course Completed:</b> OD ${escapeHtml(data.uris.priorCourseCompletedOD || '—')} | OS ${escapeHtml(data.uris.priorCourseCompletedOS || '—')}</div>
@@ -160,7 +158,7 @@ export class ExportService {
         .join(' | ') || '—';
 
       html += `
-        <div style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
           <div><b>Status:</b> ${data.hcq.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '—')}</div>
@@ -214,6 +212,7 @@ export class ExportService {
           <style>
             body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;}
             img{max-width:100%;}
+            .module-card{page-break-inside:avoid;break-inside:avoid;}
             ${isLetterhead ? `
             @page {
               margin-top: 25mm;
@@ -346,6 +345,8 @@ export class ExportService {
       addRow('Anatomical Type (OS)', data.uris.anatomicalTypeOS);
       addRow('Nature (OD)', data.uris.natureOD);
       addRow('Nature (OS)', data.uris.natureOS);
+      addRow('FFA (OD)', data.uris.ffaOD);
+      addRow('FFA (OS)', data.uris.ffaOS);
       addRow('Episode Pattern (OD)', data.uris.episodePatternOD);
       addRow('Episode Pattern (OS)', data.uris.episodePatternOS);
       addRow('Episodes Last 1–2 Years (OD)', data.uris.episodesCountOD);

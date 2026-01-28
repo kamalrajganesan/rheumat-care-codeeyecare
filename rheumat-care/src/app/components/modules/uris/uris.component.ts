@@ -58,6 +58,8 @@ export class UrisComponent implements OnInit, OnDestroy {
       anatomicalTypeOS: [''],
       natureOD: [''],
       natureOS: [''],
+      ffaOD: [''],
+      ffaOS: [''],
       episodePatternOD: [''],
       episodePatternOS: [''],
       episodesCountOD: [''],
