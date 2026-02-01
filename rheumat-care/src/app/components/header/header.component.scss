@@ -92,6 +92,26 @@ button {
   }
 }
 
+/* Compact header for very small phones */
+@media (max-width: 480px) {
+  .topbar { padding: 8px 10px; border-radius: 10px; }
+
+  .brand {
+    .logo { height: 32px; }
+    h1 { font-size: 13px; }
+    p { font-size: 11px; }
+  }
+
+  .actions {
+    gap: 6px;
+
+    button {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+  }
+}
+
 .pdf-dropdown {
   position: relative;
   display: inline-block;

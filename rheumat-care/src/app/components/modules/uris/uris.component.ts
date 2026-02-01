@@ -14,7 +14,8 @@ import {
   LATERALITY_OPTIONS,
   UVEITIS_ACTION_ITEMS,
   SURGERY_CLEARANCE_OPTIONS,
-  YES_NO_OPTIONS
+  YES_NO_OPTIONS,
+  FFA_OPTIONS
 } from '../../../models/constants';
 import { debounceTime } from 'rxjs/operators';
 
@@ -38,6 +39,7 @@ export class UrisComponent implements OnInit, OnDestroy {
   actionItems = UVEITIS_ACTION_ITEMS;
   surgeryClearanceOptions = SURGERY_CLEARANCE_OPTIONS;
   yesNoOptions = YES_NO_OPTIONS;
+  ffaOptions = FFA_OPTIONS;
   completed: boolean = false;
   private resetSubscription!: Subscription;
 
@@ -58,8 +60,8 @@ export class UrisComponent implements OnInit, OnDestroy {
       anatomicalTypeOS: [''],
       natureOD: [''],
       natureOS: [''],
-      ffaOD: [''],
-      ffaOS: [''],
+      ffaOD: ['Not done'],
+      ffaOS: ['Not done'],
       episodePatternOD: [''],
       episodePatternOS: [''],
       episodesCountOD: [''],
@@ -91,7 +93,7 @@ export class UrisComponent implements OnInit, OnDestroy {
       });
 
     this.resetSubscription = this.dataService.reset$.subscribe(() => {
-      this.urisForm.reset({ diagnosis: [], actionItems: [] });
+      this.urisForm.reset({ diagnosis: [], actionItems: [], ffaOD: 'Not done', ffaOS: 'Not done' });
       this.completed = false;
     });
   }

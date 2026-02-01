@@ -63,7 +63,7 @@ export const CORNEAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
 
 export const CONJUNCTIVAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
 
-export const TOPICAL_ANTI_INFLAMMATORY_OPTIONS = ['No', 'Cyclosporine', 'Lifitegrast', 'Others'];
+export const TOPICAL_ANTI_INFLAMMATORY_OPTIONS = ['No', 'Cyclosporine', 'Lifitegrast', 'Both', 'Others'];
 
 export const FOLLOW_UP_STATUS = [
   'Baseline',
@@ -121,6 +121,14 @@ export const UVEITIS_NATURE = [
   'Granulomatous',
   'Non-granulomatous',
   'Not sure / evolving'
+];
+
+export const FFA_OPTIONS = [
+  'Not done',
+  'Retinal Vascular Leakage/ Staining',
+  'Optic Disc Hyperfluorescence',
+  'CME',
+  'Capillary Non-Perfusion'
 ];
 
 export const UVEITIS_DIAGNOSES = [

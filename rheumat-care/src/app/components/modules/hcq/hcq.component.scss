@@ -25,6 +25,24 @@
   }
 }
 
+/* Stack dosing block fields on small phones */
+@media (max-width: 640px) {
+  .dosing-block {
+    padding: 8px;
+
+    .row, .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+    }
+  }
+}
+
 .cumulative-dose {
   margin-top: 12px;
   padding: 12px;

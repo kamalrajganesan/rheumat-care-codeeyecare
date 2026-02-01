@@ -29,10 +29,10 @@ export class ExportService {
         <div style="height:100px;"></div>
         <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
           <div style="font-size:16px;font-weight:800;margin-bottom:8px;">Eye Rheumatology Interface Summary</div>
-          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
-          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
-          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '—')}</div>
-          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : '—'}</div>
+          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '')}</div>
+          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '')}</div>
+          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '')}</div>
+          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : ''}</div>
         </div>
       `;
     } else {
@@ -46,10 +46,10 @@ export class ExportService {
             </div>
           </div>
           <hr style="border:none;border-top:1px solid #d6dbe6;margin:12px 0;" />
-          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '—')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '—')}</div>
-          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '—')}</div>
-          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '—')}</div>
-          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : '—'}</div>
+          <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '')}</div>
+          <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '')}</div>
+          <div><b>Visit Type:</b> ${escapeHtml(data.patientVisit.visitType || '')}</div>
+          <div><b>Modules Included:</b> ${data.selectedModules.length ? data.selectedModules.join(', ') : ''}</div>
         </div>
       `;
     }
@@ -58,14 +58,14 @@ export class ExportService {
     html += `
       <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
         <div style="font-weight:800;margin-bottom:6px;">Rheumatologist Sheet</div>
-        <div><b>Systemic Diagnosis:</b> ${data.rheumatologistSheet.systemicDiagnosis.length ? data.rheumatologistSheet.systemicDiagnosis.join(', ') : '—'}</div>
+        <div><b>Systemic Diagnosis:</b> ${data.rheumatologistSheet.systemicDiagnosis.length ? data.rheumatologistSheet.systemicDiagnosis.join(', ') : ''}</div>
         ${data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis ? `<div><b>Other Diagnosis Details:</b> ${escapeHtml(data.rheumatologistSheet.otherDiagnosis)}</div>` : ''}
-        <div><b>Serology Status:</b> ${escapeHtml(data.rheumatologistSheet.serologyStatus || '—')}</div>
-        <div><b>Status:</b> ${escapeHtml(data.rheumatologistSheet.diseaseStatus || '—')}</div>
-        <div><b>Treatment Target:</b> ${escapeHtml(data.rheumatologistSheet.treatmentTarget || '—')}</div>
-        <div><b>Disease Activity Score:</b> ${escapeHtml(data.rheumatologistSheet.diseaseActivityScore || '—')}</div>
-        <div><b>ESR:</b> ${escapeHtml(data.rheumatologistSheet.esr || '—')} &nbsp; | &nbsp; <b>CRP:</b> ${escapeHtml(data.rheumatologistSheet.crp || '—')}</div>
-        <div><b>Rheumatologist's Impression:</b> ${escapeHtml(data.rheumatologistSheet.rheumatologistImpression || '—')}</div>
+        <div><b>Serology Status:</b> ${escapeHtml(data.rheumatologistSheet.serologyStatus || '')}</div>
+        <div><b>Status:</b> ${escapeHtml(data.rheumatologistSheet.diseaseStatus || '')}</div>
+        <div><b>Treatment Target:</b> ${escapeHtml(data.rheumatologistSheet.treatmentTarget || '')}</div>
+        <div><b>Disease Activity Score:</b> ${escapeHtml(data.rheumatologistSheet.diseaseActivityScore || '')}</div>
+        <div><b>ESR:</b> ${escapeHtml(data.rheumatologistSheet.esr || '')} &nbsp; | &nbsp; <b>CRP:</b> ${escapeHtml(data.rheumatologistSheet.crp || '')}</div>
+        <div><b>Rheumatologist's Impression:</b> ${escapeHtml(data.rheumatologistSheet.rheumatologistImpression || '')}</div>
       </div>
     `;
 
@@ -103,17 +103,17 @@ export class ExportService {
         <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">CRIS – Cornea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.cris.completed ? 'Complete' : 'Pending'}</div>
-          <div><b>DEQ5:</b> OD ${data.cris.deq5OD ?? '—'} | OS ${data.cris.deq5OS ?? '—'}</div>
-          <div><b>OSDI-6 Score:</b> OD ${data.cris.osdi6OD ?? '—'} | OS ${data.cris.osdi6OS ?? '—'}</div>
-          <div><b>Schirmer's 1 @5 min:</b> OD ${data.cris.schirmerOD ?? '—'} mm | OS ${data.cris.schirmerOS ?? '—'} mm</div>
-          <div><b>Corneal Staining:</b> OD ${escapeHtml(data.cris.cornealStainingOD || '—')} | OS ${escapeHtml(data.cris.cornealStainingOS || '—')}</div>
-          <div><b>Conjunctival Staining:</b> OD ${escapeHtml(data.cris.conjunctivalStainingOD || '—')} | OS ${escapeHtml(data.cris.conjunctivalStainingOS || '—')}</div>
-          <div><b>Topical Anti-Inflammatory:</b> ${escapeHtml(data.cris.topicalAntiInflammatory || '—')}${data.cris.topicalAntiInflammatory && data.cris.topicalAntiInflammatory !== 'No' && data.cris.antiInflammatoryName ? ' – ' + escapeHtml(data.cris.antiInflammatoryName) : ''}</div>
-          <div><b>Topical Steroids:</b> ${escapeHtml(data.cris.topicalSteroids || '—')}${data.cris.topicalSteroids === 'Yes' && data.cris.topicalSteroidsName ? ' – ' + escapeHtml(data.cris.topicalSteroidsName) : ''}</div>
-          <div><b>Follow-Up Clinical Status:</b> OD ${escapeHtml(data.cris.followUpOD || '—')} | OS ${escapeHtml(data.cris.followUpOS || '—')}</div>
-          <div><b>Clearance For Elective Surgery:</b> ${escapeHtml(data.cris.electiveSurgeryClearance || '—')}</div>
-          <div><b>Emergency Conditions:</b> ${emergConditions || '—'}</div>
-          <div><b>Coordination / Escalation:</b> ${data.cris.coordinationItems.length ? data.cris.coordinationItems.join(', ') : '—'}</div>
+          <div><b>DEQ5:</b> OD ${data.cris.deq5OD ?? ''} | OS ${data.cris.deq5OS ?? ''}</div>
+          <div><b>OSDI-6 Score:</b> OD ${data.cris.osdi6OD ?? ''} | OS ${data.cris.osdi6OS ?? ''}</div>
+          <div><b>Schirmer's 1 @5 min:</b> OD ${data.cris.schirmerOD ?? ''} mm | OS ${data.cris.schirmerOS ?? ''} mm</div>
+          <div><b>Corneal Staining:</b> OD ${escapeHtml(data.cris.cornealStainingOD || '')} | OS ${escapeHtml(data.cris.cornealStainingOS || '')}</div>
+          <div><b>Conjunctival Staining:</b> OD ${escapeHtml(data.cris.conjunctivalStainingOD || '')} | OS ${escapeHtml(data.cris.conjunctivalStainingOS || '')}</div>
+          <div><b>Topical Anti-Inflammatory:</b> ${escapeHtml(data.cris.topicalAntiInflammatory || '')}${data.cris.topicalAntiInflammatory && data.cris.topicalAntiInflammatory !== 'No' && data.cris.antiInflammatoryName ? ' – ' + escapeHtml(data.cris.antiInflammatoryName) : ''}</div>
+          <div><b>Topical Steroids:</b> ${escapeHtml(data.cris.topicalSteroids || '')}${data.cris.topicalSteroids === 'Yes' && data.cris.topicalSteroidsName ? ' – ' + escapeHtml(data.cris.topicalSteroidsName) : ''}</div>
+          <div><b>Follow-Up Clinical Status:</b> OD ${escapeHtml(data.cris.followUpOD || '')} | OS ${escapeHtml(data.cris.followUpOS || '')}</div>
+          <div><b>Clearance For Elective Surgery:</b> ${escapeHtml(data.cris.electiveSurgeryClearance || '')}</div>
+          <div><b>Emergency Conditions:</b> ${emergConditions || ''}</div>
+          <div><b>Coordination / Escalation:</b> ${data.cris.coordinationItems.length ? data.cris.coordinationItems.join(', ') : ''}</div>
           ${data.cris.ophthalmologistImpression ? `<div><b>Ophthalmologist's Impression:</b> ${escapeHtml(data.cris.ophthalmologistImpression)}</div>` : ''}
           ${data.cris.additionalNotes ? `<div><b>Additional Notes:</b> ${escapeHtml(data.cris.additionalNotes)}</div>` : ''}
         </div>
@@ -126,20 +126,20 @@ export class ExportService {
         <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">URIS – Uvea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.uris.completed ? 'Complete' : 'Pending'}</div>
-          <div><b>Visit:</b> ${escapeHtml(data.uris.visit || '—')}</div>
-          <div><b>Uveitis Status:</b> OD ${escapeHtml(data.uris.uveitisStatusOD || '—')} | OS ${escapeHtml(data.uris.uveitisStatusOS || '—')}</div>
-          <div><b>Anatomical Type:</b> OD ${escapeHtml(data.uris.anatomicalTypeOD || '—')} | OS ${escapeHtml(data.uris.anatomicalTypeOS || '—')}</div>
-          <div><b>Nature:</b> OD ${escapeHtml(data.uris.natureOD || '—')} | OS ${escapeHtml(data.uris.natureOS || '—')}</div>
-          <div><b>FFA:</b> OD ${escapeHtml(data.uris.ffaOD || '—')} | OS ${escapeHtml(data.uris.ffaOS || '—')}</div>
-          <div><b>Episode Pattern:</b> OD ${escapeHtml(data.uris.episodePatternOD || '—')} | OS ${escapeHtml(data.uris.episodePatternOS || '—')}</div>
-          <div><b>Episodes (Last 1–2 Years):</b> OD ${escapeHtml(data.uris.episodesCountOD || '—')} | OS ${escapeHtml(data.uris.episodesCountOS || '—')}</div>
-          <div><b>Prior Course Completed:</b> OD ${escapeHtml(data.uris.priorCourseCompletedOD || '—')} | OS ${escapeHtml(data.uris.priorCourseCompletedOS || '—')}</div>
-          <div><b>Topical Steroids:</b> OD ${escapeHtml(data.uris.topicalSteroidsOD || '—')}${data.uris.topicalSteroidsOD === 'Yes' && data.uris.topicalSteroidsNameOD ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOD) : ''} | OS ${escapeHtml(data.uris.topicalSteroidsOS || '—')}${data.uris.topicalSteroidsOS === 'Yes' && data.uris.topicalSteroidsNameOS ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOS) : ''}</div>
-          <div><b>Topical NSAID:</b> OD ${escapeHtml(data.uris.topicalNSAIDOD || '—')}${data.uris.topicalNSAIDOD === 'Yes' && data.uris.topicalNSAIDNameOD ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOD) : ''} | OS ${escapeHtml(data.uris.topicalNSAIDOS || '—')}${data.uris.topicalNSAIDOS === 'Yes' && data.uris.topicalNSAIDNameOS ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOS) : ''}</div>
-          <div><b>Likely/Confirmed Diagnosis:</b> ${data.uris.diagnosis.length ? data.uris.diagnosis.join(', ') : '—'}</div>
-          <div><b>Final Uveitis Diagnosis:</b> ${escapeHtml(data.uris.finalDiagnosis || '—')}</div>
-          <div><b>Action Items:</b> ${data.uris.actionItems.length ? data.uris.actionItems.join(', ') : '—'}</div>
-          <div><b>Surgery Clearance:</b> ${escapeHtml(data.uris.surgeryClearance || '—')}</div>
+          <div><b>Visit:</b> ${escapeHtml(data.uris.visit || '')}</div>
+          <div><b>Uveitis Status:</b> OD ${escapeHtml(data.uris.uveitisStatusOD || '')} | OS ${escapeHtml(data.uris.uveitisStatusOS || '')}</div>
+          <div><b>Anatomical Type:</b> OD ${escapeHtml(data.uris.anatomicalTypeOD || '')} | OS ${escapeHtml(data.uris.anatomicalTypeOS || '')}</div>
+          <div><b>Nature:</b> OD ${escapeHtml(data.uris.natureOD || '')} | OS ${escapeHtml(data.uris.natureOS || '')}</div>
+          <div><b>FFA:</b> OD ${escapeHtml(data.uris.ffaOD || '')} | OS ${escapeHtml(data.uris.ffaOS || '')}</div>
+          <div><b>Episode Pattern:</b> OD ${escapeHtml(data.uris.episodePatternOD || '')} | OS ${escapeHtml(data.uris.episodePatternOS || '')}</div>
+          <div><b>Episodes (Last 1–2 Years):</b> OD ${escapeHtml(data.uris.episodesCountOD || '')} | OS ${escapeHtml(data.uris.episodesCountOS || '')}</div>
+          <div><b>Prior Course Completed:</b> OD ${escapeHtml(data.uris.priorCourseCompletedOD || '')} | OS ${escapeHtml(data.uris.priorCourseCompletedOS || '')}</div>
+          <div><b>Topical Steroids:</b> OD ${escapeHtml(data.uris.topicalSteroidsOD || '')}${data.uris.topicalSteroidsOD === 'Yes' && data.uris.topicalSteroidsNameOD ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOD) : ''} | OS ${escapeHtml(data.uris.topicalSteroidsOS || '')}${data.uris.topicalSteroidsOS === 'Yes' && data.uris.topicalSteroidsNameOS ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOS) : ''}</div>
+          <div><b>Topical NSAID:</b> OD ${escapeHtml(data.uris.topicalNSAIDOD || '')}${data.uris.topicalNSAIDOD === 'Yes' && data.uris.topicalNSAIDNameOD ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOD) : ''} | OS ${escapeHtml(data.uris.topicalNSAIDOS || '')}${data.uris.topicalNSAIDOS === 'Yes' && data.uris.topicalNSAIDNameOS ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOS) : ''}</div>
+          <div><b>Likely/Confirmed Diagnosis:</b> ${data.uris.diagnosis.length ? data.uris.diagnosis.join(', ') : ''}</div>
+          <div><b>Final Uveitis Diagnosis:</b> ${escapeHtml(data.uris.finalDiagnosis || '')}</div>
+          <div><b>Action Items:</b> ${data.uris.actionItems.length ? data.uris.actionItems.join(', ') : ''}</div>
+          <div><b>Surgery Clearance:</b> ${escapeHtml(data.uris.surgeryClearance || '')}</div>
           ${data.uris.ophthalmologistInput ? `<div><b>Ophthalmologist Input:</b> ${escapeHtml(data.uris.ophthalmologistInput)}</div>` : ''}
         </div>
       `;
@@ -155,17 +155,17 @@ export class ExportService {
           return null;
         })
         .filter(b => b !== null)
-        .join(' | ') || '—';
+        .join(' | ') || '';
 
       html += `
         <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
           <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
           <div><b>Status:</b> ${data.hcq.completed ? 'Complete' : 'Pending'}</div>
-          <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '—')}</div>
+          <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '')}</div>
           <div><b>Dosing History:</b> ${dosingBlocksHtml}</div>
-          <div><b>Cumulative HCQ Dose:</b> ${escapeHtml(data.hcq.cumulativeDose || '—')}</div>
-          <div><b>Tests:</b> ${data.hcq.testsPerformed.length ? data.hcq.testsPerformed.join(', ') : '—'}</div>
-          <div><b>Signs of Toxicity:</b> ${escapeHtml(data.hcq.toxicitySigns || '—')}</div>
+          <div><b>Cumulative HCQ Dose:</b> ${escapeHtml(data.hcq.cumulativeDose || '')}</div>
+          <div><b>Tests:</b> ${data.hcq.testsPerformed.length ? data.hcq.testsPerformed.join(', ') : ''}</div>
+          <div><b>Signs of Toxicity:</b> ${escapeHtml(data.hcq.toxicitySigns || '')}</div>
           ${data.hcq.notes ? `<div><b>Notes:</b> ${escapeHtml(data.hcq.notes)}</div>` : ''}
         </div>
       `;
@@ -246,7 +246,7 @@ export class ExportService {
 
     // Helper to add a row
     const addRow = (label: string, value: string | number | null | undefined) => {
-      rows.push([label, String(value ?? '—')]);
+      rows.push([label, String(value ?? '')]);
     };
 
     // Header
@@ -262,11 +262,11 @@ export class ExportService {
     addRow('MR Number', data.patientVisit.cecNumber);
     addRow('Rheumatologist Name', data.patientVisit.rheumatologistName);
     addRow('Visit Type', data.patientVisit.visitType);
-    addRow('Modules Included', data.selectedModules.join('; ') || '—');
+    addRow('Modules Included', data.selectedModules.join('; ') || '');
 
     // Rheumatologist Sheet
     addSection('RHEUMATOLOGIST SHEET');
-    addRow('Systemic Diagnosis', data.rheumatologistSheet.systemicDiagnosis.join('; ') || '—');
+    addRow('Systemic Diagnosis', data.rheumatologistSheet.systemicDiagnosis.join('; ') || '');
     if (data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis) {
       addRow('Other Diagnosis Details', data.rheumatologistSheet.otherDiagnosis);
     }
@@ -328,8 +328,8 @@ export class ExportService {
         .filter(ec => ec.checked)
         .map(ec => ec.laterality ? `${ec.name} (${ec.laterality})` : ec.name)
         .join('; ');
-      addRow('Emergency Conditions', emergConditions || '—');
-      addRow('Coordination / Escalation', data.cris.coordinationItems.join('; ') || '—');
+      addRow('Emergency Conditions', emergConditions || '');
+      addRow('Coordination / Escalation', data.cris.coordinationItems.join('; ') || '');
       addRow('Ophthalmologist\'s Impression', data.cris.ophthalmologistImpression);
       addRow('Additional Notes', data.cris.additionalNotes);
     }
@@ -369,9 +369,9 @@ export class ExportService {
       if (data.uris.topicalNSAIDOS === 'Yes' && data.uris.topicalNSAIDNameOS) {
         addRow('NSAID Name/Dose (OS)', data.uris.topicalNSAIDNameOS);
       }
-      addRow('Likely/Confirmed Diagnosis', data.uris.diagnosis.join('; ') || '—');
+      addRow('Likely/Confirmed Diagnosis', data.uris.diagnosis.join('; ') || '');
       addRow('Final Uveitis Diagnosis', data.uris.finalDiagnosis);
-      addRow('Action Items', data.uris.actionItems.join('; ') || '—');
+      addRow('Action Items', data.uris.actionItems.join('; ') || '');
       addRow('Surgery Clearance', data.uris.surgeryClearance);
       addRow('Ophthalmologist Input', data.uris.ophthalmologistInput);
     }
@@ -383,12 +383,12 @@ export class ExportService {
       addRow('Screening Type', data.hcq.screeningType);
       data.hcq.dosingBlocks.forEach((block, i) => {
         if (block.dose || block.duration) {
-          addRow(`Dosing Block ${i + 1} - Dose`, block.dose ? `${block.dose} mg/day` : '—');
-          addRow(`Dosing Block ${i + 1} - Duration`, block.duration ? `${block.duration} months` : '—');
+          addRow(`Dosing Block ${i + 1} - Dose`, block.dose ? `${block.dose} mg/day` : '');
+          addRow(`Dosing Block ${i + 1} - Duration`, block.duration ? `${block.duration} months` : '');
         }
       });
       addRow('Cumulative HCQ Dose', data.hcq.cumulativeDose);
-      addRow('Tests Performed', data.hcq.testsPerformed.join('; ') || '—');
+      addRow('Tests Performed', data.hcq.testsPerformed.join('; ') || '');
       addRow('Signs of Toxicity', data.hcq.toxicitySigns);
       addRow('Notes', data.hcq.notes);
     }

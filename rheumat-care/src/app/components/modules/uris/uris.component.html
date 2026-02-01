@@ -85,10 +85,14 @@
     <div class="miniGrid3">
       <div><label>FFA</label></div>
       <div>
-        <input type="text" formControlName="ffaOD" placeholder="FFA findings" [attr.disabled]="isODDisabled() ? true : null" />
+        <select formControlName="ffaOD">
+          <option *ngFor="let option of ffaOptions" [value]="option">{{ option }}</option>
+        </select>
       </div>
       <div>
-        <input type="text" formControlName="ffaOS" placeholder="FFA findings" [attr.disabled]="isOSDisabled() ? true : null" />
+        <select formControlName="ffaOS">
+          <option *ngFor="let option of ffaOptions" [value]="option">{{ option }}</option>
+        </select>
       </div>
     </div>
 
