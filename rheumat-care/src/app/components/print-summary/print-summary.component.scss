@@ -1,1 +1,47 @@
-// Styles are inherited from global styles
+/* Print summary preview - iOS-friendly */
+
+:host {
+  display: block;
+}
+
+/* On mobile, the print preview card should be fully visible */
+.card {
+  /* Ensure the innerHTML content wraps properly on iOS */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  /* Prevent horizontal scroll on iOS */
+  overflow-x: hidden;
+}
+
+/* Module cards inside the preview */
+:host ::ng-deep .module-card {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  /* Ensure images scale on iOS */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Long text fields should not overflow */
+  div {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    /* Tighter padding on mobile */
+    padding: 8px;
+
+    /* Smaller text in preview on mobile for readability */
+    :host ::ng-deep .module-card {
+      font-size: 13px;
+    }
+  }
+}

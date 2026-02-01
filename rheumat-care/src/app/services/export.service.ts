@@ -27,7 +27,7 @@ export class ExportService {
       // Letterhead format: blank header space for custom letterhead
       html += `
         <div style="height:100px;"></div>
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-size:16px;font-weight:800;margin-bottom:8px;">Eye Rheumatology Interface Summary</div>
           <div><b>Patient:</b> ${escapeHtml(data.patientVisit.patientName || '')} &nbsp; | &nbsp; <b>MR Number:</b> ${escapeHtml(data.patientVisit.cecNumber || '')}</div>
           <div><b>Rheumatologist:</b> ${escapeHtml(data.patientVisit.rheumatologistName || '')}</div>
@@ -38,7 +38,7 @@ export class ExportService {
     } else {
       // Code Eye Care format: with logo and branding
       html += `
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="">
             <img src="assets/images/code-eye-care-logo.png" style="height:42px;width:auto;object-fit:contain;" onerror="this.style.display='none'" /><br>
             <div>
@@ -56,7 +56,7 @@ export class ExportService {
 
     // Rheumatologist Sheet
     html += `
-      <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+      <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
         <div style="font-weight:800;margin-bottom:6px;">Rheumatologist Sheet</div>
         <div><b>Systemic Diagnosis:</b> ${data.rheumatologistSheet.systemicDiagnosis.length ? data.rheumatologistSheet.systemicDiagnosis.join(', ') : ''}</div>
         ${data.rheumatologistSheet.systemicDiagnosis.includes('Others') && data.rheumatologistSheet.otherDiagnosis ? `<div><b>Other Diagnosis Details:</b> ${escapeHtml(data.rheumatologistSheet.otherDiagnosis)}</div>` : ''}
@@ -72,7 +72,7 @@ export class ExportService {
     // Medications
     if (data.medications.selectedMeds.length > 0) {
       html += `
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-weight:800;margin-bottom:6px;">Current systemic medications</div>
           <div><b>Meds:</b> ${data.medications.selectedMeds.join(', ')}</div>
       `;
@@ -100,7 +100,7 @@ export class ExportService {
         .join(', ');
 
       html += `
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-weight:800;margin-bottom:6px;">CRIS – Cornea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.cris.completed ? 'Complete' : 'Pending'}</div>
           <div><b>DEQ5:</b> OD ${data.cris.deq5OD ?? ''} | OS ${data.cris.deq5OS ?? ''}</div>
@@ -123,7 +123,7 @@ export class ExportService {
     // URIS Module
     if (data.selectedModules.includes('URIS (Uvea–Rheumat)') && data.uris) {
       html += `
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-weight:800;margin-bottom:6px;">URIS – Uvea–Rheumat Interface</div>
           <div><b>Status:</b> ${data.uris.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Visit:</b> ${escapeHtml(data.uris.visit || '')}</div>
@@ -158,7 +158,7 @@ export class ExportService {
         .join(' | ') || '';
 
       html += `
-        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;">
+        <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
           <div><b>Status:</b> ${data.hcq.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '')}</div>
@@ -196,9 +196,45 @@ export class ExportService {
     return html;
   }
 
+  private isIOS(): boolean {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  private getPrintStyles(isLetterhead: boolean): string {
+    return `
+      *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;-webkit-text-size-adjust:100%;}
+      img{max-width:100%;}
+      .module-card{page-break-inside:avoid;break-inside:avoid;}
+      ${isLetterhead ? `
+      @page{margin-top:25mm;margin-bottom:20mm;}
+      @media print{body{margin-top:0;}}
+      ` : `
+      @page{margin:10mm;}
+      `}
+      @media print{
+        body{margin:0;padding:12px;}
+        .no-print{display:none!important;}
+      }
+    `;
+  }
+
   printSummary(data: RheumatCareData, format: PrintFormat = 'codeEyeCare'): void {
     const html = this.generatePrintHTML(data, format);
     const isLetterhead = format === 'letterhead';
+    const styles = this.getPrintStyles(isLetterhead);
+
+    if (this.isIOS()) {
+      // iOS Safari: use iframe approach (popups are blocked)
+      this.printViaIframe(html, styles);
+    } else {
+      // Desktop/Android: use popup window approach
+      this.printViaPopup(html, styles);
+    }
+  }
+
+  private printViaPopup(html: string, styles: string): void {
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.open();
@@ -207,27 +243,66 @@ export class ExportService {
         <html>
         <head>
           <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
           <title>Eye Rheumatology Interface Summary</title>
-          <style>
-            body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;}
-            img{max-width:100%;}
-            .module-card{page-break-inside:avoid;break-inside:avoid;}
-            ${isLetterhead ? `
-            @page {
-              margin-top: 25mm;
-              margin-bottom: 20mm;
-            }
-            @media print {
-              body { margin-top: 0; }
-            }
-            ` : ''}
-          </style>
+          <style>${styles}</style>
         </head>
         <body>${html}<script>window.onload=()=>{window.print();}<\/script></body>
         </html>
       `);
       printWindow.document.close();
+    } else {
+      // Fallback if popup blocked on desktop too
+      this.printViaIframe(html, styles);
+    }
+  }
+
+  private printViaIframe(html: string, styles: string): void {
+    // Remove any existing print iframe
+    const existingFrame = document.getElementById('ios-print-frame');
+    if (existingFrame) {
+      existingFrame.remove();
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'ios-print-frame';
+    iframe.style.position = 'fixed';
+    iframe.style.top = '-10000px';
+    iframe.style.left = '-10000px';
+    iframe.style.width = '1px';
+    iframe.style.height = '1px';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (iframeDoc) {
+      iframeDoc.open();
+      iframeDoc.write(`
+        <!doctype html>
+        <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+          <title>Eye Rheumatology Interface Summary</title>
+          <style>${styles}</style>
+        </head>
+        <body>${html}</body>
+        </html>
+      `);
+      iframeDoc.close();
+
+      // Delay to allow content rendering on iOS Safari
+      setTimeout(() => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+        } catch {
+          // Final fallback: print the whole page
+          window.print();
+        }
+        // Clean up after printing
+        setTimeout(() => iframe.remove(), 1000);
+      }, 500);
     }
   }
 
@@ -396,14 +471,34 @@ export class ExportService {
     // Convert rows to CSV string
     const csv = rows.map(row => row.map(cell => `"${escape(cell)}"`).join(',')).join('\n');
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Eye_Rheum_${(data.patientVisit.cecNumber || 'CEC').replace(/\s/g, '_')}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const filename = `Eye_Rheum_${(data.patientVisit.cecNumber || 'CEC').replace(/\s/g, '_')}.csv`;
+
+    if (this.isIOS()) {
+      // iOS Safari: use data URI approach since Blob URLs may not trigger download
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const a = document.createElement('a');
+        a.href = reader.result as string;
+        a.download = filename;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+        }, 100);
+      };
+      reader.readAsDataURL(blob);
+    } else {
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   }
 }
