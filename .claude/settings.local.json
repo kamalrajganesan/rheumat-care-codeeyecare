@@ -7,7 +7,8 @@
       "Bash(npx:*)",
       "Bash(npm run build:*)",
       "Bash(xargs cat:*)",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(find:*)"
     ]
   }
 }

@@ -415,5 +415,20 @@ button {
   .module-card {
     page-break-inside: avoid;
     break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+  }
+
+  /* Hide print-summary wrapper text when window.print() fallback is used.
+     This ensures clean output matching the standalone popup HTML. */
+  app-print-summary > .card > h2,
+  app-print-summary > .card > .small,
+  app-print-summary > .card > .divider {
+    display: none !important;
+  }
+
+  /* Match the standalone print HTML's font sizing for consistency */
+  app-print-summary .module-card {
+    font-size: 13px;
+    line-height: 1.35;
   }
 }

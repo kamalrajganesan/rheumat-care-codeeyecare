@@ -202,8 +202,8 @@
 
     <div class="divider"></div>
 
-    <!-- Likely / confirmed diagnosis -->
-    <label>Likely / confirmed diagnosis (tick that applies)</label>
+    <!-- Likely Diagnosis -->
+    <label>Likely Diagnosis (multiple  options)</label>
     <div class="checks">
       <label *ngFor="let diagnosis of diagnoses" class="check">
         <input
@@ -215,7 +215,7 @@
       </label>
     </div>
 
-    <label for="finalDiagnosis">Final uveitis diagnosis (if known)</label>
+    <label for="finalDiagnosis">Final Diagnosis (once confirmed)</label>
     <input
       type="text"
       id="finalDiagnosis"

@@ -383,10 +383,10 @@
 
         <div class="divider"></div>
 
-        <label>Likely / confirmed diagnosis (tick that applies)</label>
+        <label>Likely Diagnosis (tick that applies)</label>
         <div class="checks" id="uvDxChecks"></div>
 
-        <label>Final uveitis diagnosis (if known)</label>
+        <label>Final Diagnosis (once confirmed)</label>
         <input type="text" id="uvFinalDx" placeholder="(optional)" />
 
         <div class="divider"></div>
@@ -642,7 +642,7 @@
   // HCQ module checks init
   makeChecks("hcqTestChecks", [
     "Macula OCT",
-    "Fundus photo",
+    " Fundus Photo / Auto Fluorescence",
     "HVF 10-2/24-2",
     "MF-ERG (if required)"
   ]);
@@ -812,8 +812,8 @@
           <div><b>Uveitis status:</b> ${escapeHtml($("uvStatus").value||"—")}</div>
           <div><b>Anatomical type:</b> ${escapeHtml($("uvAnat").value||"—")}</div>
           <div><b>Nature:</b> ${escapeHtml($("uvNature").value||"—")}</div>
-          <div><b>Likely/confirmed diagnosis:</b> ${dx.length?dx.join(", "):"—"}</div>
-          <div><b>Final uveitis diagnosis:</b> ${escapeHtml($("uvFinalDx").value||"—")}</div>
+          <div><b>Likely Diagnosis:</b> ${dx.length?dx.join(", "):"—"}</div>
+          <div><b>Final Diagnosis:</b> ${escapeHtml($("uvFinalDx").value||"—")}</div>
           <div><b>Episode pattern:</b> ${escapeHtml($("uvEpisode").value||"—")}</div>
           <div><b>Episodes (last 1–2 years):</b> ${escapeHtml($("uvEpisodesCount").value||"—")}</div>
           <div><b>Prior course completed:</b> ${escapeHtml($("uvCourseCompleted").value||"—")}</div>

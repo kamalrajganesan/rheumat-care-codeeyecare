@@ -136,8 +136,8 @@ export class ExportService {
           <div><b>Prior Course Completed:</b> OD ${escapeHtml(data.uris.priorCourseCompletedOD || '')} | OS ${escapeHtml(data.uris.priorCourseCompletedOS || '')}</div>
           <div><b>Topical Steroids:</b> OD ${escapeHtml(data.uris.topicalSteroidsOD || '')}${data.uris.topicalSteroidsOD === 'Yes' && data.uris.topicalSteroidsNameOD ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOD) : ''} | OS ${escapeHtml(data.uris.topicalSteroidsOS || '')}${data.uris.topicalSteroidsOS === 'Yes' && data.uris.topicalSteroidsNameOS ? ' – ' + escapeHtml(data.uris.topicalSteroidsNameOS) : ''}</div>
           <div><b>Topical NSAID:</b> OD ${escapeHtml(data.uris.topicalNSAIDOD || '')}${data.uris.topicalNSAIDOD === 'Yes' && data.uris.topicalNSAIDNameOD ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOD) : ''} | OS ${escapeHtml(data.uris.topicalNSAIDOS || '')}${data.uris.topicalNSAIDOS === 'Yes' && data.uris.topicalNSAIDNameOS ? ' – ' + escapeHtml(data.uris.topicalNSAIDNameOS) : ''}</div>
-          <div><b>Likely/Confirmed Diagnosis:</b> ${data.uris.diagnosis.length ? data.uris.diagnosis.join(', ') : ''}</div>
-          <div><b>Final Uveitis Diagnosis:</b> ${escapeHtml(data.uris.finalDiagnosis || '')}</div>
+          <div><b>Likely Diagnosis:</b> ${data.uris.diagnosis.length ? data.uris.diagnosis.join(', ') : ''}</div>
+          <div><b>Final Diagnosis:</b> ${escapeHtml(data.uris.finalDiagnosis || '')}</div>
           <div><b>Action Items:</b> ${data.uris.actionItems.length ? data.uris.actionItems.join(', ') : ''}</div>
           <div><b>Surgery Clearance:</b> ${escapeHtml(data.uris.surgeryClearance || '')}</div>
           ${data.uris.ophthalmologistInput ? `<div><b>Ophthalmologist Input:</b> ${escapeHtml(data.uris.ophthalmologistInput)}</div>` : ''}
@@ -204,17 +204,19 @@ export class ExportService {
   private getPrintStyles(isLetterhead: boolean): string {
     return `
       *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-      body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;-webkit-text-size-adjust:100%;}
+      body{font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:18px;color:#111827;-webkit-text-size-adjust:100%;font-size:13px;line-height:1.35;}
       img{max-width:100%;}
-      .module-card{page-break-inside:avoid;break-inside:avoid;}
+      .module-card{page-break-inside:avoid;break-inside:avoid;-webkit-column-break-inside:avoid;padding:10px 14px!important;margin-top:8px!important;}
+      .module-card:first-child{margin-top:0!important;}
+      .module-card div{line-height:1.35;}
       ${isLetterhead ? `
-      @page{margin-top:25mm;margin-bottom:20mm;}
+      @page{size:A4 portrait;margin-top:25mm;margin-bottom:20mm;}
       @media print{body{margin-top:0;}}
       ` : `
-      @page{margin:10mm;}
+      @page{size:A4 portrait;margin:8mm 10mm;}
       `}
       @media print{
-        body{margin:0;padding:12px;}
+        body{margin:0;padding:8px 12px;}
         .no-print{display:none!important;}
       }
     `;
@@ -225,13 +227,10 @@ export class ExportService {
     const isLetterhead = format === 'letterhead';
     const styles = this.getPrintStyles(isLetterhead);
 
-    if (this.isIOS()) {
-      // iOS Safari: use iframe approach (popups are blocked)
-      this.printViaIframe(html, styles);
-    } else {
-      // Desktop/Android: use popup window approach
-      this.printViaPopup(html, styles);
-    }
+    // Use popup approach for all platforms — works reliably when triggered
+    // by a synchronous user gesture (click/tap). Falls back to iframe
+    // automatically if the browser blocks the popup.
+    this.printViaPopup(html, styles);
   }
 
   private printViaPopup(html: string, styles: string): void {
@@ -269,9 +268,10 @@ export class ExportService {
     iframe.style.position = 'fixed';
     iframe.style.top = '-10000px';
     iframe.style.left = '-10000px';
-    iframe.style.width = '1px';
-    iframe.style.height = '1px';
+    iframe.style.width = '794px';
+    iframe.style.height = '1123px';
     iframe.style.border = 'none';
+    iframe.style.visibility = 'hidden';
     document.body.appendChild(iframe);
 
     const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
@@ -291,7 +291,7 @@ export class ExportService {
       `);
       iframeDoc.close();
 
-      // Delay to allow content rendering on iOS Safari
+      // Delay to allow content rendering (longer for iOS Safari)
       setTimeout(() => {
         try {
           iframe.contentWindow?.focus();
@@ -301,8 +301,8 @@ export class ExportService {
           window.print();
         }
         // Clean up after printing
-        setTimeout(() => iframe.remove(), 1000);
-      }, 500);
+        setTimeout(() => iframe.remove(), 2000);
+      }, 800);
     }
   }
 
@@ -444,8 +444,8 @@ export class ExportService {
       if (data.uris.topicalNSAIDOS === 'Yes' && data.uris.topicalNSAIDNameOS) {
         addRow('NSAID Name/Dose (OS)', data.uris.topicalNSAIDNameOS);
       }
-      addRow('Likely/Confirmed Diagnosis', data.uris.diagnosis.join('; ') || '');
-      addRow('Final Uveitis Diagnosis', data.uris.finalDiagnosis);
+      addRow('Likely Diagnosis', data.uris.diagnosis.join('; ') || '');
+      addRow('Final Diagnosis', data.uris.finalDiagnosis);
       addRow('Action Items', data.uris.actionItems.join('; ') || '');
       addRow('Surgery Clearance', data.uris.surgeryClearance);
       addRow('Ophthalmologist Input', data.uris.ophthalmologistInput);
