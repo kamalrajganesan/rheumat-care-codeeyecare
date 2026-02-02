@@ -184,7 +184,7 @@ export const HCQ_SCREENING_TYPES = [
 
 export const HCQ_TESTS = [
   'Macula OCT',
-  'Fundus photo',
+  'Fundus Photo / Auto Fluorescence',
   'HVF',
   'MF-ERG (if required)'
 ];
