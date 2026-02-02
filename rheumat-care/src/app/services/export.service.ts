@@ -171,27 +171,16 @@ export class ExportService {
       `;
     }
 
-    if (isLetterhead) {
-      // Letterhead format: footer with attribution and blank space for custom letterhead
-      html += `
-        <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
-          <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
-          <div style="margin-top:6px;font-style:italic;">Developed by CODE Eye Care. This tool is intended for screening purposes only and clinical decisions remain the responsibility of the treating clinician.</div>
+    // Code Eye Care format: full branding footer
+    html += `
+      <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
+        <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
+        <div style="margin-top:6px;font-style:italic;">
+          <strong>Developed by CODE Eye Care - Institute of Excellence for Cornea, Ocular Surface & Dry Eye </strong><br/>
+          This tool supports structured clinical documentation and interdisciplinary communication. Final diagnosis and clinical decisions remain the responsibility of the treating clinician.
         </div>
-        <div style="height:80px;"></div>
-      `;
-    } else {
-      // Code Eye Care format: full branding footer
-      html += `
-        <div style="margin-top:14px;text-align:center;font-size:10px;color:#666;">
-          <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
-          <div style="margin-top:6px;font-style:italic;">
-            <strong>Developed by CODE Eye Care - Institute of Excellence for Cornea, Ocular Surface & Dry Eye </strong><br/>
-            This tool supports structured clinical documentation and interdisciplinary communication. Final diagnosis and clinical decisions remain the responsibility of the treating clinician.
-          </div>
-        </div>
-      `;
-    }
+      </div>
+    `;
 
     return html;
   }
@@ -226,14 +215,15 @@ export class ExportService {
     const html = this.generatePrintHTML(data, format);
     const isLetterhead = format === 'letterhead';
     const styles = this.getPrintStyles(isLetterhead);
+    const mrNumber = (data.patientVisit.cecNumber || 'Unknown').replace(/\s/g, '_');
 
     // Use popup approach for all platforms — works reliably when triggered
     // by a synchronous user gesture (click/tap). Falls back to iframe
     // automatically if the browser blocks the popup.
-    this.printViaPopup(html, styles);
+    this.printViaPopup(html, styles, mrNumber);
   }
 
-  private printViaPopup(html: string, styles: string): void {
+  private printViaPopup(html: string, styles: string, mrNumber: string): void {
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.open();
@@ -243,7 +233,7 @@ export class ExportService {
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-          <title>Eye Rheumatology Interface Summary</title>
+          <title>Eye_Rheumat_Interface_Sheet_MR_${mrNumber}</title>
           <style>${styles}</style>
         </head>
         <body>${html}<script>window.onload=()=>{window.print();}<\/script></body>
@@ -252,11 +242,11 @@ export class ExportService {
       printWindow.document.close();
     } else {
       // Fallback if popup blocked on desktop too
-      this.printViaIframe(html, styles);
+      this.printViaIframe(html, styles, mrNumber);
     }
   }
 
-  private printViaIframe(html: string, styles: string): void {
+  private printViaIframe(html: string, styles: string, mrNumber: string): void {
     // Remove any existing print iframe
     const existingFrame = document.getElementById('ios-print-frame');
     if (existingFrame) {
@@ -283,7 +273,7 @@ export class ExportService {
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-          <title>Eye Rheumatology Interface Summary</title>
+          <title>Eye_Rheumat_Interface_Sheet_MR_${mrNumber}</title>
           <style>${styles}</style>
         </head>
         <body>${html}</body>
@@ -471,7 +461,7 @@ export class ExportService {
     // Convert rows to CSV string
     const csv = rows.map(row => row.map(cell => `"${escape(cell)}"`).join(',')).join('\n');
 
-    const filename = `Eye_Rheum_${(data.patientVisit.cecNumber || 'CEC').replace(/\s/g, '_')}.csv`;
+    const filename = `Eye_Rheumat_Interface_Sheet_MR_${(data.patientVisit.cecNumber || 'Unknown').replace(/\s/g, '_')}.csv`;
 
     if (this.isIOS()) {
       // iOS Safari: use data URI approach since Blob URLs may not trigger download
