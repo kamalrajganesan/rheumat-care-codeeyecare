@@ -63,7 +63,7 @@ export const CORNEAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
 
 export const CONJUNCTIVAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
 
-export const TOPICAL_ANTI_INFLAMMATORY_OPTIONS = ['No', 'Cyclosporine', 'Lifitegrast', 'Both', 'Others'];
+export const TOPICAL_ANTI_INFLAMMATORY_OPTIONS = ['No', 'Cyclosporine', 'Lifitegrast', 'Cyclosporine & Lifitegrast', 'Others'];
 
 export const FOLLOW_UP_STATUS = [
   'Baseline',

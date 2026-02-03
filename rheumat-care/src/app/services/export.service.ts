@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RheumatCareData } from '../models/patient-data.model';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export type PrintFormat = 'codeEyeCare' | 'letterhead';
 
@@ -177,7 +179,7 @@ export class ExportService {
         <div>Generated • ${escapeHtml(data.timestamp || new Date().toLocaleString())}</div>
         <div style="margin-top:6px;font-style:italic;">
           <strong>Developed by CODE Eye Care - Institute of Excellence for Cornea, Ocular Surface & Dry Eye </strong><br/>
-          This tool supports structured clinical documentation and interdisciplinary communication. Final diagnosis and clinical decisions remain the responsibility of the treating clinician.
+          <span style="font-size:8px;">This tool supports structured clinical documentation and interdisciplinary communication. Final diagnosis and clinical decisions remain the responsibility of the treating clinician.</span>
         </div>
       </div>
     `;
@@ -187,6 +189,11 @@ export class ExportService {
 
   private isIOS(): boolean {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  private isMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
 
@@ -216,11 +223,125 @@ export class ExportService {
     const isLetterhead = format === 'letterhead';
     const styles = this.getPrintStyles(isLetterhead);
     const mrNumber = (data.patientVisit.cecNumber || 'Unknown').replace(/\s/g, '_');
+    const filename = `Eye_Rheumat_Interface_Sheet_MR_${mrNumber}.pdf`;
 
-    // Use popup approach for all platforms — works reliably when triggered
-    // by a synchronous user gesture (click/tap). Falls back to iframe
-    // automatically if the browser blocks the popup.
-    this.printViaPopup(html, styles, mrNumber);
+    // Always generate PDF directly for consistent experience across all platforms
+    this.generatePDFWithJsPDF(html, styles, filename);
+  }
+
+  private generatePDFWithJsPDF(html: string, styles: string, filename: string): void {
+    // Create a hidden container to render the HTML
+    const container = document.createElement('div');
+    container.id = 'pdf-render-container';
+    container.style.position = 'fixed';
+    container.style.top = '-10000px';
+    container.style.left = '-10000px';
+    container.style.width = '794px'; // A4 width at 96 DPI
+    container.style.backgroundColor = '#ffffff';
+    container.innerHTML = `<style>${styles}</style>${html}`;
+    document.body.appendChild(container);
+
+    const cleanup = () => {
+      if (document.body.contains(container)) {
+        document.body.removeChild(container);
+      }
+    };
+
+    // Allow time for images to load and styles to apply
+    setTimeout(() => {
+      html2canvas(container, {
+        scale: 4, // Higher scale for HD quality
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        imageTimeout: 0
+      }).then(canvas => {
+        const margin = 10; // 10mm margin on all sides
+        const pageWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const contentWidth = pageWidth - (margin * 2); // 190mm
+        const contentHeight = pageHeight - (margin * 2); // 277mm
+        const imgHeight = (canvas.height * contentWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgData = canvas.toDataURL('image/png');
+
+        // Add first page with margins
+        pdf.addImage(imgData, 'PNG', margin, margin + position, contentWidth, imgHeight);
+        heightLeft -= contentHeight;
+
+        // Add additional pages if content overflows
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', margin, margin + position, contentWidth, imgHeight);
+          heightLeft -= contentHeight;
+        }
+
+        // Deliver the PDF based on platform
+        this.deliverPDF(pdf, filename);
+
+        // Cleanup after a delay to ensure all operations complete
+        setTimeout(cleanup, 1000);
+      }).catch((err) => {
+        console.error('PDF generation failed:', err);
+        cleanup();
+        // Fallback to print dialog if PDF generation fails
+        const mrNumber = filename.replace('.pdf', '').replace('Eye_Rheumat_Interface_Sheet_MR_', '');
+        this.printViaPopup(html, styles, mrNumber);
+      });
+    }, 500);
+  }
+
+  private deliverPDF(pdf: jsPDF, filename: string): void {
+    const pdfBlob = pdf.output('blob');
+
+    // iOS: Try Web Share API first (works best for sharing/printing)
+    if (this.isIOS()) {
+      if (navigator.share && navigator.canShare) {
+        const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+        try {
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: filename
+            }).catch(() => {
+              // Share cancelled or failed - try blob download
+              this.downloadPDFViaBlob(pdfBlob, filename);
+            });
+            return;
+          }
+        } catch {
+          // canShare threw - fallback
+        }
+      }
+      // iOS fallback: blob download
+      this.downloadPDFViaBlob(pdfBlob, filename);
+      return;
+    }
+
+    // Android and other mobile: Use blob URL download
+    this.downloadPDFViaBlob(pdfBlob, filename);
+  }
+
+  private downloadPDFViaBlob(blob: Blob, filename: string): void {
+    // Create blob URL and trigger download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup after download initiated
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 200);
   }
 
   private printViaPopup(html: string, styles: string, mrNumber: string): void {

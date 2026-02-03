@@ -8,7 +8,9 @@
       "Bash(npm run build:*)",
       "Bash(xargs cat:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git log:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
