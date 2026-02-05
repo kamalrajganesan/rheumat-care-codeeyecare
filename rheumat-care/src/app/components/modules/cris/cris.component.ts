@@ -5,6 +5,7 @@ import { DataService } from '../../../services/data.service';
 import {
   CORNEAL_STAINING_LEVELS,
   CONJUNCTIVAL_STAINING_LEVELS,
+  DRY_EYE_TYPES,
   TOPICAL_ANTI_INFLAMMATORY_OPTIONS,
   FOLLOW_UP_STATUS,
   ELECTIVE_SURGERY_CLEARANCE,
@@ -25,6 +26,7 @@ export class CrisComponent implements OnInit, OnDestroy {
   crisForm!: FormGroup;
   cornealStainingLevels = CORNEAL_STAINING_LEVELS;
   conjunctivalStainingLevels = CONJUNCTIVAL_STAINING_LEVELS;
+  dryEyeTypes = DRY_EYE_TYPES;
   topicalAntiInflammatoryOptions = TOPICAL_ANTI_INFLAMMATORY_OPTIONS;
   followUpStatuses = FOLLOW_UP_STATUS;
   electiveSurgeryClearances = ELECTIVE_SURGERY_CLEARANCE;
@@ -56,6 +58,8 @@ export class CrisComponent implements OnInit, OnDestroy {
       cornealStainingOS: [''],
       conjunctivalStainingOD: [''],
       conjunctivalStainingOS: [''],
+      typeOfDryEye: [''],
+      typeOfDryEyeOther: [''],
       topicalAntiInflammatory: [''],
       antiInflammatoryName: [''],
       topicalSteroids: [''],
@@ -128,6 +132,10 @@ export class CrisComponent implements OnInit, OnDestroy {
   isCoordinationChecked(item: string): boolean {
     const currentItems = this.crisForm.get('coordinationItems')?.value || [];
     return currentItems.includes(item);
+  }
+
+  showDryEyeOther(): boolean {
+    return this.crisForm.get('typeOfDryEye')?.value === 'Others';
   }
 
   showAntiInflammatoryName(): boolean {

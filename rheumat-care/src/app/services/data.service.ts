@@ -115,6 +115,8 @@ export class DataService {
           cornealStainingOS: '',
           conjunctivalStainingOD: '',
           conjunctivalStainingOS: '',
+          typeOfDryEye: '',
+          typeOfDryEyeOther: '',
           topicalAntiInflammatory: '',
           topicalSteroids: '',
           followUpOD: '',

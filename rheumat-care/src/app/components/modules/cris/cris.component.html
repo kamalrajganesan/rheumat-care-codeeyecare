@@ -83,6 +83,15 @@
       </div>
     </div>
 
+    <label for="typeOfDryEye">Type of Dry Eye(Either Eye)</label>
+    <select id="typeOfDryEye" formControlName="typeOfDryEye">
+      <option value="">Select…</option>
+      <option *ngFor="let type of dryEyeTypes" [value]="type">{{ type }}</option>
+    </select>
+    <div *ngIf="showDryEyeOther()">
+      <input type="text" formControlName="typeOfDryEyeOther" placeholder="Specify type" />
+    </div>
+
     <label for="antiInflammatory">On Topical Anti-Inflammatory</label>
     <select id="antiInflammatory" formControlName="topicalAntiInflammatory">
       <option value="">Select…</option>

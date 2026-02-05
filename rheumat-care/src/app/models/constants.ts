@@ -59,6 +59,14 @@ export const MODULES = [
 ];
 
 // CRIS Module Constants
+export const DRY_EYE_TYPES = [
+  'No Dry Eye',
+  'Aqueous Deficiency Dry Eye (ADDE)',
+  'Meibomian Gland Dysfunction (MGD)',
+  'Mixed',
+  'Others'
+];
+
 export const CORNEAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];
 
 export const CONJUNCTIVAL_STAINING_LEVELS = ['Nil', 'Mild', 'Moderate', 'Severe'];

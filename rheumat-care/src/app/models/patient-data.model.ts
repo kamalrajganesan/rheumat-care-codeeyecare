@@ -39,6 +39,8 @@ export interface CRISModule {
   cornealStainingOS: string;
   conjunctivalStainingOD: string;
   conjunctivalStainingOS: string;
+  typeOfDryEye: string;
+  typeOfDryEyeOther?: string;
   topicalAntiInflammatory: string;
   antiInflammatoryName?: string;
   topicalSteroids: string;

@@ -110,6 +110,7 @@ export class ExportService {
           <div><b>Schirmer's 1 @5 min:</b> OD ${data.cris.schirmerOD ?? ''} mm | OS ${data.cris.schirmerOS ?? ''} mm</div>
           <div><b>Corneal Staining:</b> OD ${escapeHtml(data.cris.cornealStainingOD || '')} | OS ${escapeHtml(data.cris.cornealStainingOS || '')}</div>
           <div><b>Conjunctival Staining:</b> OD ${escapeHtml(data.cris.conjunctivalStainingOD || '')} | OS ${escapeHtml(data.cris.conjunctivalStainingOS || '')}</div>
+          <div><b>Type of Dry Eye:</b> ${escapeHtml(data.cris.typeOfDryEye || '')}${data.cris.typeOfDryEye === 'Others' && data.cris.typeOfDryEyeOther ? ' – ' + escapeHtml(data.cris.typeOfDryEyeOther) : ''}</div>
           <div><b>Topical Anti-Inflammatory:</b> ${escapeHtml(data.cris.topicalAntiInflammatory || '')}${data.cris.topicalAntiInflammatory && data.cris.topicalAntiInflammatory !== 'No' && data.cris.antiInflammatoryName ? ' – ' + escapeHtml(data.cris.antiInflammatoryName) : ''}</div>
           <div><b>Topical Steroids:</b> ${escapeHtml(data.cris.topicalSteroids || '')}${data.cris.topicalSteroids === 'Yes' && data.cris.topicalSteroidsName ? ' – ' + escapeHtml(data.cris.topicalSteroidsName) : ''}</div>
           <div><b>Follow-Up Clinical Status:</b> OD ${escapeHtml(data.cris.followUpOD || '')} | OS ${escapeHtml(data.cris.followUpOS || '')}</div>
@@ -149,22 +150,11 @@ export class ExportService {
 
     // HCQ Module
     if (data.selectedModules.includes('HCQ Screening') && data.hcq) {
-      const dosingBlocksHtml = data.hcq.dosingBlocks
-        .map((block, i) => {
-          if (block.dose && block.duration) {
-            return `Block ${i + 1}: ${block.dose} mg/day × ${block.duration} months`;
-          }
-          return null;
-        })
-        .filter(b => b !== null)
-        .join(' | ') || '';
-
       html += `
         <div class="module-card" style="border:1px solid #d6dbe6;border-radius:14px;padding:14px;margin-top:12px;overflow-wrap:break-word;word-wrap:break-word;">
           <div style="font-weight:800;margin-bottom:6px;">HCQ Screening</div>
           <div><b>Status:</b> ${data.hcq.completed ? 'Complete' : 'Pending'}</div>
           <div><b>Type:</b> ${escapeHtml(data.hcq.screeningType || '')}</div>
-          <div><b>Dosing History:</b> ${dosingBlocksHtml}</div>
           <div><b>Cumulative HCQ Dose:</b> ${escapeHtml(data.hcq.cumulativeDose || '')}</div>
           <div><b>Tests:</b> ${data.hcq.testsPerformed.length ? data.hcq.testsPerformed.join(', ') : ''}</div>
           <div><b>Signs of Toxicity:</b> ${escapeHtml(data.hcq.toxicitySigns || '')}</div>
@@ -172,6 +162,22 @@ export class ExportService {
         </div>
       `;
     }
+
+    // Doctor's signature section
+    html += `
+      <div style="margin-top:24px;padding:14px;border-top:1px solid #d6dbe6;">
+        <div style="display:flex;justify-content:flex-end;">
+          <div style="text-align:center;min-width:200px;">
+            <div style="height:60px;"></div>
+            <div style="padding-top:4px;font-size:12px;">
+              <div style="font-size:10px;margin-top:6px;">Signature: ________________________</div>
+              <div style="height:10px;"></div>
+              <div style="font-size:10px;margin-top:6px;">Name: &emsp; _________________________</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 
     // Code Eye Care format: full branding footer
     html += `
@@ -499,6 +505,7 @@ export class ExportService {
       addRow('Corneal Staining (OS)', data.cris.cornealStainingOS);
       addRow('Conjunctival Staining (OD)', data.cris.conjunctivalStainingOD);
       addRow('Conjunctival Staining (OS)', data.cris.conjunctivalStainingOS);
+      addRow('Type of Dry Eye', data.cris.typeOfDryEye === 'Others' && data.cris.typeOfDryEyeOther ? `Others – ${data.cris.typeOfDryEyeOther}` : data.cris.typeOfDryEye);
       addRow('Topical Anti-Inflammatory', data.cris.topicalAntiInflammatory);
       if (data.cris.topicalAntiInflammatory && data.cris.topicalAntiInflammatory !== 'No' && data.cris.antiInflammatoryName) {
         addRow('Anti-Inflammatory Name/Dose', data.cris.antiInflammatoryName);
@@ -567,12 +574,6 @@ export class ExportService {
       addSection('HCQ SCREENING');
       addRow('Status', data.hcq.completed ? 'Complete' : 'Pending');
       addRow('Screening Type', data.hcq.screeningType);
-      data.hcq.dosingBlocks.forEach((block, i) => {
-        if (block.dose || block.duration) {
-          addRow(`Dosing Block ${i + 1} - Dose`, block.dose ? `${block.dose} mg/day` : '');
-          addRow(`Dosing Block ${i + 1} - Duration`, block.duration ? `${block.duration} months` : '');
-        }
-      });
       addRow('Cumulative HCQ Dose', data.hcq.cumulativeDose);
       addRow('Tests Performed', data.hcq.testsPerformed.join('; ') || '');
       addRow('Signs of Toxicity', data.hcq.toxicitySigns);
